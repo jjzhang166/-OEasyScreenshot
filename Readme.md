@@ -4,7 +4,7 @@
 
   项目名：oe_screenshot
 
-  开源协议：[BSD](http://git.oschina.net/Mr_ChenLuYong/oe_screenshot/blob/master/LICENSE?dir=0&filepath=LICENSE&oid=1b1eafc2016c0120dc6d3cfb82f503d692720397&sha=3848f4f8e509130d4a61cc1ada9188fa9ebdb7d6)
+  开源协议：[Apache-2.0](https://git.oschina.net/Mr_ChenLuYong/screenshot/blob/master/LICENSE%20-%20Chinese?dir=0&filepath=LICENSE+-+Chinese&oid=e397dfabe7c0920e5f34e505f9a4695bcb897752&sha=8ea256ada89ab0bd9c57f5cbfed29974ecf7f24c)
 
   作者：Mr_ChenLuYong
 
@@ -23,4 +23,4 @@
   
 - 开源
 
-  码云地址：http://git.oschina.net/Mr_ChenLuYong/oe_screenshot
+  码云地址：http://git.oschina.net/Mr_ChenLuYong/screenshot
