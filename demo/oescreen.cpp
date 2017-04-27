@@ -26,8 +26,8 @@ OEScreen::OEScreen(QPixmap *originPainting, QPoint pos, QWidget *parent)
     connect(this, SIGNAL(doubleClick()),
             this, SLOT(onSaveScreen()));
 
-    this->direction_ = NONE;
-    this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowSystemMenuHint); // 设置成无边框对话框
+    // 设置成无边框对话框
+    this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowSystemMenuHint);
     this->setMouseTracking(true);
 }
 

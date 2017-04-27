@@ -117,10 +117,10 @@ protected slots:
     void quitScreenshot(void);
 
 private:
+    // 是否已经设置初始大小
     bool isInit_;
-
-    DIRECTION direction_;        // 窗口大小改变时，记录改变方向
-
+    // 窗口大小改变时，记录改变方向
+    DIRECTION direction_;
     // 起点
     QPoint originPoint_;
     // 鼠标是否按下
