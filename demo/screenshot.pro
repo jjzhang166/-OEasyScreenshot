@@ -29,13 +29,13 @@ SOURCES += main.cpp\
     oeamplifier.cpp \
     oescreen.cpp \
     oerect.cpp \
-    commonhelper.cpp
+    oecommonhelper.cpp
 
 HEADERS  += oescreenshot.h \
     oeamplifier.h \
     oescreen.h \
     oerect.h \
-    commonhelper.h
+    oecommonhelper.h
 
 RESOURCES += \
     screen.qrc

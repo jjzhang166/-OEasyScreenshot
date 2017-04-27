@@ -3,14 +3,14 @@
 #ifndef QT_NO_DEBUG
 #include <QDebug>
 #endif
-#include "commonhelper.h"
+#include "oecommonhelper.h"
 OERect::OERect(QWidget *parent) : QWidget(parent)
 {
     backgroundPixmap_ = new QPixmap(width(),height());
-    backgroundPixmap_->fill((QColor(0, 0, 0, 160)));
+    backgroundPixmap_->fill((QColor(0, 174, 255, 60)));
 
-    setFixedSize(95 * CommonHelper::getWindowWidthMultiplyingPower(),
-                 20 * CommonHelper::getWindowHeightMultiplyingPower());
+    setFixedSize(95 * OECommonHelper::getWindowWidthMultiplyingPower(),
+                 20 * OECommonHelper::getWindowHeightMultiplyingPower());
     hide();
 }
 

@@ -12,14 +12,12 @@ signals:
 
 
 public:
-    explicit OERect(QWidget *parent = 0);
 
+    explicit OERect(QWidget *parent = 0);
 
 protected:
 
     void paintEvent(QPaintEvent *);
-
-
 
 public slots:
     void onPostionChange(int x, int y);
