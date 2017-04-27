@@ -16,10 +16,10 @@
 
 Qt库版本：Qt 5.8.1 （测试5.0以上都可以正常编译）
 
-更新内容 [【点击查看】](https://git.oschina.net/Mr_ChenLuYong/screenshot/blob/master/doc/%E6%9B%B4%E6%96%B0%E5%8E%86%E5%8F%B2.md?dir=0&filepath=doc%2F%E6%9B%B4%E6%96%B0%E5%8E%86%E5%8F%B2.md&oid=1c7dd04bf4e254f214705643a87ab75c4ef27391&sha=23567dd631032a8ad1e49191faed3c40915c6149)
+更新内容 [【点击查看】](https://git.oschina.net/Mr_ChenLuYong/screenshot/tree/master/doc)
 
 
-效果演示 [【点击查看】](https://git.oschina.net/Mr_ChenLuYong/screenshot/tree/master/doc/demo%20show?dir=1&filepath=doc%2Fdemo+show&oid=01f6f4a8a48cf0b72d76ab8ca8b4962d3d200504&sha=98cdccba0352d22497df1d0e093592a93f84f723)
+效果演示 - demo show [【点击查看】](https://git.oschina.net/Mr_ChenLuYong/screenshot/tree/master/doc)
 
 
 # 开源通知
