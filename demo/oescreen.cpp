@@ -31,14 +31,13 @@ OEScreen::OEScreen(QPixmap *originPainting, QPoint pos, QWidget *parent)
     this->setMouseTracking(true);
 }
 
-OEScreen::DIRECTION OEScreen::getRegion(const QPoint &cursor)
-{
+OEScreen::DIRECTION OEScreen::getRegion(const QPoint &cursor) {
     if (!isInit_) {
         return NONE;
     }
     OEScreen::DIRECTION ret_dir = NONE;
-    QPoint ptopleft = mapToGlobal(rect().topLeft());
-    QPoint prightbottom = mapToGlobal(rect().bottomRight());
+    QPoint ptopleft = mapToParent(rect().topLeft());
+    QPoint prightbottom = mapToParent(rect().bottomRight());
 
     int x = cursor.x();
     int y = cursor.y();
@@ -132,15 +131,15 @@ void OEScreen::mouseReleaseEvent(QMouseEvent * e) {
     }
 }
 void OEScreen::mouseMoveEvent(QMouseEvent * e) {
-    QPoint gloPoint = e->globalPos();
-    QPoint ptopleft = mapToGlobal(rect().topLeft());
-    QPoint pleftbottom = mapToGlobal(rect().bottomLeft());
-    QPoint prightbottom = mapToGlobal(rect().bottomRight());
-    QPoint prighttop = mapToGlobal(rect().topRight());
-
+    QPoint gloPoint = mapToParent(e->pos());
+    QPoint ptopleft = mapToParent(rect().topLeft());
+    QPoint pleftbottom = mapToParent(rect().bottomLeft());
+    QPoint prightbottom = mapToParent(rect().bottomRight());
+    QPoint prighttop = mapToParent(rect().topRight());
     if(!isPressed_) {
         // 检查鼠标鼠标位置
         direction_ = getRegion(gloPoint);
+
         // 根据方位判断拖拉对应支点
         switch(direction_) {
         case NONE:
@@ -166,26 +165,28 @@ void OEScreen::mouseMoveEvent(QMouseEvent * e) {
     }
     else {
         if(direction_ != NONE) {
+            const int& global_x = gloPoint.x();
             // 鼠标进行拖拉拽
             switch(direction_) {
             case LEFT:
-                return onMouseChange(gloPoint.x(),pleftbottom.y() + 1);
+                return onMouseChange(global_x, pleftbottom.y() + 1);
             case RIGHT:
-                return onMouseChange(gloPoint.x(),prightbottom.y() + 1);
+                return onMouseChange(global_x, prightbottom.y() + 1);
             case UP:
-                return onMouseChange(ptopleft.x(),gloPoint.y());
+                return onMouseChange(global_x, gloPoint.y());
             case DOWN:
-                return onMouseChange(prightbottom.x() + 1,gloPoint.y());
+                return onMouseChange(prightbottom.x() + 1, gloPoint.y());
             case LEFTTOP:
             case RIGHTTOP:
             case LEFTBOTTOM:
             case RIGHTBOTTOM:
-                return onMouseChange(gloPoint.x(),gloPoint.y());
+                return onMouseChange(global_x, gloPoint.y());
             default:
                 break;
             }
         }
         else {
+            // 窗口的移动
             move(e->globalPos() - movePos_);
             movePos_ = e->globalPos() - pos();
             emit postionChange(pos().x(),pos().y());
@@ -212,7 +213,7 @@ void OEScreen::paintEvent(QPaintEvent *) {
        *originPainting_, currentRect_);
 
     // 绘制边框线
-    QPen pen(QColor(0,174,255),1);
+    QPen pen(QColor(0,174,255),2);
     painter.setPen(pen);
     painter.drawRect(rect());
 
@@ -276,7 +277,8 @@ void OEScreen::onMouseChange(int w, int h) {
     // 改变大小
     currentRect_ = QRect(rx, ry, rw, rh);
     emit sizeChange(rw, rh);
-    setGeometry(currentRect_);
+
+    this->setGeometry(currentRect_);
     emit postionChange(currentRect_.x(),currentRect_.y());
     // 改变大小后更新父窗口，防止父窗口未及时刷新而导致的问题
     parentWidget()->update();

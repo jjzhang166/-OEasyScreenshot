@@ -7,7 +7,9 @@
 #include <QMouseEvent>
 #include <QCursor>
 #include <QMutex>
-
+#ifndef QT_NO_DEBUG
+#include <QDebug>
+#endif
 
 #include "oeamplifier.h"
 #include "oescreen.h"
