@@ -28,6 +28,8 @@
 #include <QWidget>
 #include <QDesktopWidget>
 
+#include <windows.h>
+
 #ifndef QT_NO_DEBUG
 #include <QDebug>
 #endif
@@ -81,4 +83,32 @@ void OECommonHelper::upWindowSizeMultiplyingPower() {
            / (float)WINDOW_BASESIZE_WIDTH;
    heightMultiplyingPower_ = (float)temp_size.height()
            / (float)WINDOW_BASESIZE_HEIGHT;
+}
+
+bool OECommonHelper::getSmallestWindowFromCursor(QRect& out_rect) {
+    HWND hwnd;
+    POINT pt;
+    // 获得当前鼠标位置
+    ::GetCursorPos(&pt);
+    // 获得当前位置桌面上的子窗口
+    hwnd = ::ChildWindowFromPointEx(::GetDesktopWindow(), pt, CWP_SKIPDISABLED | CWP_SKIPINVISIBLE);
+    if (hwnd != NULL) {
+        HWND temp_hwnd;
+        temp_hwnd = hwnd;
+        while (true) {
+            ::GetCursorPos(&pt);
+            ::ScreenToClient(temp_hwnd, &pt);
+            temp_hwnd = ::ChildWindowFromPointEx(temp_hwnd, pt, CWP_SKIPINVISIBLE);
+            if (temp_hwnd == NULL || temp_hwnd == hwnd)
+                break;
+            hwnd = temp_hwnd;
+        }
+        RECT temp_window;
+        ::GetWindowRect(hwnd, &temp_window);
+        out_rect.setRect(temp_window.left,temp_window.top,
+                         temp_window.right - temp_window.left,
+                         temp_window.bottom - temp_window.top);
+        return true;
+    }
+    return false;
 }

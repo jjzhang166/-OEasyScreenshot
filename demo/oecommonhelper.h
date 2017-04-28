@@ -72,7 +72,18 @@ public:
     **/
     static const float& getWindowHeightMultiplyingPower(void);
 
+    /**
+    * 函数名：getSmallestWindowFromCursor
+    * 功能：获得当前鼠标位置最小的子窗口
+    * 参数：out_rect 矩形
+    * 返回：成功:true
+    * 作者：陈鲁勇
+    * 日期：2017年04月10日
+    **/
+    static bool getSmallestWindowFromCursor(QRect &out_rect);
+
 protected:
+
     /**
     * 函数名：upWindowSizeMultiplyingPower
     * 功能：更新窗口倍率
@@ -80,6 +91,7 @@ protected:
     * 日期：2017年04月10日
     **/
     static void upWindowSizeMultiplyingPower(void);
+
 
 private:
     static float widthMultiplyingPower_;
