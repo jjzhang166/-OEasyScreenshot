@@ -60,6 +60,7 @@ public:
     static OEScreenshot *Instance();
 
 protected:
+
     virtual void mouseDoubleClickEvent(QMouseEvent*);
     virtual void mousePressEvent(QMouseEvent *);
     virtual void mouseReleaseEvent(QMouseEvent *e);
@@ -122,13 +123,13 @@ private:
 
     /*
      * 获得截图器
-     * 函数：getScreen
+     * 函数：createScreen
      * 参数：pos 截图器的窗口起始位置
      * 返回：截图器实例
      * 作者：陈鲁勇
      * 时间：2017年04月16日
      */
-    OEScreen* getScreen(const QPoint &pos);
+    OEScreen* createScreen(const QPoint &pos);
     /*
      * 摧毁截图器
      * 函数：delScreen
@@ -140,7 +141,7 @@ private:
 private:
 
     // 截屏窗口是否已经展示
-    bool isScreenShow_;
+    bool isLeftPressed_;
     // 用于检测误操作
     QPoint startPoint_;
     // 当前桌面屏幕的矩形数据

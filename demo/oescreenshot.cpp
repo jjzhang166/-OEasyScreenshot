@@ -173,7 +173,7 @@ void OEScreenshot::initCursor(const QString& _ico) {
     setCursor(cursor);
 }
 
-OEScreen *OEScreenshot::getScreen(const QPoint &pos) {
+OEScreen *OEScreenshot::createScreen(const QPoint &pos) {
     if (screenTool_ == nullptr) {
         screenTool_ = new OEScreen(originPainting_, pos, this);
         // 建立截图器大小关联
@@ -185,10 +185,10 @@ OEScreen *OEScreenshot::getScreen(const QPoint &pos) {
                 rectTool_, SLOT(onSizeChange(int,int)));
         connect(screenTool_, SIGNAL(postionChange(int,int)),
                 rectTool_, SLOT(onPostionChange(int,int)));
-        rectTool_->show();
+
         // 获得截图器当前起始位置
         startPoint_ = pos;
-        isScreenShow_ = true;
+        isLeftPressed_ = true;
     }
     return screenTool_;
 }
@@ -204,11 +204,10 @@ void OEScreenshot::delScreen() {
                 rectTool_, SLOT(onSizeChange(int,int)));
         disconnect(screenTool_, SIGNAL(postionChange(int,int)),
                 rectTool_, SLOT(onPostionChange(int,int)));
-        rectTool_->hide();
         // 清理工具
         delete screenTool_;
         screenTool_ = nullptr;
-        isScreenShow_ = false;
+        isLeftPressed_ = false;
         return;
     }
 }
@@ -216,7 +215,7 @@ void OEScreenshot::delScreen() {
 
 void OEScreenshot::mousePressEvent(QMouseEvent *e) {
     if (e->button() == Qt::LeftButton) {
-        getScreen(e->pos());
+        createScreen(e->pos());
         return ;
     }
 }
@@ -225,21 +224,21 @@ void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
     if (e->button() == Qt::RightButton
         || startPoint_ == e->pos()) {
         if (screenTool_ != nullptr) {
+            rectTool_->hide();
             return delScreen();
         }
         close();
         return ;
     }
-    else if (isScreenShow_ == true
+    else if (isLeftPressed_ == true
              && e->button() == Qt::LeftButton) {
-        screenTool_->done();
-        isScreenShow_ = false;
+        isLeftPressed_ = false;
     }
     QWidget::mouseReleaseEvent(e);
 }
 
 void OEScreenshot::mouseMoveEvent(QMouseEvent *e) {
-    if (isScreenShow_) {
+    if (isLeftPressed_) {
         emit cursorPosChange(e->x(), e->y());
     }
     QWidget::mouseMoveEvent(e);
