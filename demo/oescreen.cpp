@@ -227,6 +227,21 @@ void OEScreen::moveEvent(QMoveEvent *) {
 }
 
 void OEScreen::resizeEvent(QResizeEvent *) {
+    listMarker_.clear();
+
+    // 重新计算八个锚点
+    // 角点
+    listMarker_.push_back(QPoint(0, 0));
+    listMarker_.push_back(QPoint(width(), 0));
+    listMarker_.push_back(QPoint(0, height()));
+    listMarker_.push_back(QPoint(width(), height()));
+
+    // 中点
+    listMarker_.push_back(QPoint((width() >> 1), 0));
+    listMarker_.push_back(QPoint((width() >> 1), height()));
+    listMarker_.push_back(QPoint(0, (height() >> 1)));
+    listMarker_.push_back(QPoint(width(), (height() >> 1)));
+
     emit sizeChange(width(), height());
 }
 
@@ -273,19 +288,8 @@ void OEScreen::paintEvent(QPaintEvent *) {
     pen.setWidth(4); //改变点的宽度
     pen.setColor(Qt::red);
     painter.setPen(pen);
-    QPolygon temp_anchors;
-    // 角点
-    temp_anchors.push_back(QPoint(0, 0));
-    temp_anchors.push_back(QPoint(width(), 0));
-    temp_anchors.push_back(QPoint(0, height()));
-    temp_anchors.push_back(QPoint(width(), height()));
 
-    // 中点
-    temp_anchors.push_back(QPoint((width() >> 1), 0));
-    temp_anchors.push_back(QPoint((width() >> 1), height()));
-    temp_anchors.push_back(QPoint(0, (height() >> 1)));
-    temp_anchors.push_back(QPoint(width(), (height() >> 1)));
-    painter.drawPoints(temp_anchors);
+    painter.drawPoints(listMarker_);
 }
 
 const QString OEScreen::getFileName(void) {

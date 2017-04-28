@@ -139,12 +139,13 @@ protected slots:
 
     /*
      * 功能：退出当前截图窗口
-     * 函数：quitApp
+     * 函数：quitScreenshot
      * 时间：2017年04月16日
      */
     void quitScreenshot(void);
 
 private:
+
     // 是否已经设置初始大小
     static bool isInit_;
     // 窗口大小改变时，记录改变方向
@@ -155,6 +156,8 @@ private:
     bool isPressed_;
     // 拖动的距离
     QPoint movePos_;
+    // 标记锚点
+    QPolygon listMarker_;
     // 屏幕原画
     QPixmap* originPainting_;
     // 当前窗口几何数据 用于绘制截图区域
