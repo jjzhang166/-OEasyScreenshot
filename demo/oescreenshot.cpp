@@ -33,9 +33,12 @@
 #include <QDebug>
 #endif
 
+#include <windows.h>
+
 #include "oeamplifier.h"
 #include "oescreen.h"
 #include "oerect.h"
+#include "oecommonhelper.h"
 
 OEScreenshot * OEScreenshot::self_ = nullptr;
 
@@ -58,6 +61,8 @@ OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),
     showFullScreen();
     // 窗口与显示屏对齐
     setGeometry(getScreenRect());
+    // 开启鼠标实时追踪
+    setMouseTracking(true);
     // 展示窗口
     show();
 }
@@ -208,6 +213,7 @@ void OEScreenshot::destroyScreen() {
         delete screenTool_;
         screenTool_ = nullptr;
         isLeftPressed_ = false;
+        update();
         return;
     }
 }
@@ -231,17 +237,30 @@ void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
     }
     else if (isLeftPressed_ == true
              && e->button() == Qt::LeftButton) {
-        if (startPoint_ == e->pos()) {
+        // 选择窗口选区
+        if (startPoint_ == e->pos()
+            && !windowRect_.isEmpty()) {
             screenTool_->setGeometry(windowRect_);
+            screenTool_->show();
+            windowRect_ = {};
         }
         isLeftPressed_ = false;
     }
     QWidget::mouseReleaseEvent(e);
 }
-
 void OEScreenshot::mouseMoveEvent(QMouseEvent *e) {
     if (isLeftPressed_) {
         emit cursorPosChange(e->x(), e->y());
+        windowRect_ = {};
+        update();
+    }
+    else if (isLeftPressed_ == false
+             && false == OEScreen::state()){
+        ::EnableWindow((HWND)winId(), FALSE);
+        OECommonHelper::getSmallestWindowFromCursor(windowRect_);
+        ::EnableWindow((HWND)winId(), TRUE);
+        emit findChildWind(windowRect_);
+        update();
     }
     QWidget::mouseMoveEvent(e);
 }
@@ -251,4 +270,16 @@ void OEScreenshot::paintEvent(QPaintEvent *) {
     // 画全屏图
     painter.drawPixmap(0,0,desktopRect_.width(),
              desktopRect_.height(), *backgroundScreen_);
+
+    if (!windowRect_.isEmpty()) {
+        // 绘制选区
+        QPen pen = painter.pen();
+        pen.setColor(QColor(0,175,255));
+        pen.setWidth(2);
+        painter.setPen(pen);
+        painter.drawRect(windowRect_.x(),windowRect_.y(),
+                         windowRect_.width(),windowRect_.height());
+        painter.drawPixmap(QPoint(windowRect_.x(),windowRect_.y()),
+           *originPainting_, windowRect_);
+    }
 }

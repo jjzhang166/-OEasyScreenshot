@@ -36,8 +36,9 @@
 #include <QDebug>
 #endif
 
+bool OEScreen::isInit_ = false;
 OEScreen::OEScreen(QPixmap *originPainting, QPoint pos, QWidget *parent)
-    : QWidget(parent),isInit_(false), direction_(NONE), originPoint_(pos),
+    : QWidget(parent), direction_(NONE), originPoint_(pos),
       isPressed_(false), originPainting_(originPainting) {
     menu_ = new QMenu(this);
     menu_->addAction("完成截图", this, SLOT(onSaveScreen()));
@@ -250,6 +251,11 @@ void OEScreen::enterEvent(QEvent *e) {
 void OEScreen::leaveEvent(QEvent *e) {
     setCursor(Qt::ArrowCursor);
     QWidget::leaveEvent(e);
+}
+
+void OEScreen::closeEvent(QCloseEvent *)
+{
+    isInit_ = false;
 }
 
 void OEScreen::paintEvent(QPaintEvent *) {

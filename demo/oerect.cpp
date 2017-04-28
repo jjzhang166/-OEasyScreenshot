@@ -47,7 +47,7 @@ void OERect::paintEvent(QPaintEvent *) {
 void OERect::onPostionChange(int x, int y) {
     if (x < 0) x = 0;
     if (y < 0) y = 0;
-    const int& ry = y - height();
+    const int& ry = y - height() - 1;
     if (ry < 0) {
         this->raise();
     }

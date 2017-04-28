@@ -65,7 +65,8 @@ public:
 
     explicit OEScreen(QPixmap* originPainting, QPoint pos, QWidget *parent = 0);
 
-    bool state(void) { return isInit_; }
+    ~OEScreen() { isInit_ = false; }
+    static bool state(void) { return isInit_; }
 
     void setOriginPoint(const QPoint& pt) {originPoint_ = pt;}
 protected:
@@ -94,6 +95,7 @@ protected:
     virtual void hideEvent(QHideEvent *);
     virtual void enterEvent(QEvent *e);
     virtual void leaveEvent(QEvent *e);
+    virtual void closeEvent(QCloseEvent *);
 
     virtual void paintEvent(QPaintEvent *);
 
@@ -144,7 +146,7 @@ protected slots:
 
 private:
     // 是否已经设置初始大小
-    bool isInit_;
+    static bool isInit_;
     // 窗口大小改变时，记录改变方向
     DIRECTION direction_;
     // 起点

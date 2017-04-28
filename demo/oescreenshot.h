@@ -46,6 +46,8 @@ signals:
 
     void doubleClick(void);
 
+    void findChildWind(QRect);
+
 public:
     explicit OEScreenshot(QWidget *parent = 0);
     ~OEScreenshot(void);
