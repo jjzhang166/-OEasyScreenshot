@@ -54,14 +54,12 @@ OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),isLeftPressed_ (fa
     initAmplifier();
     // 初始化大小感知器
     initMeasureWidget();
-    // 窗口置顶
-    egoisticTimer_ = new QTimer();
-    egoisticTimer_->start(200); //程序每隔1秒置顶一次
-    connect(egoisticTimer_, SIGNAL(timeout()), this, SLOT(onEgoistic()));
     // 全屏窗口
     showFullScreen();
     // 窗口与显示屏对齐
     setGeometry(getScreenRect());
+    // 霸道置顶
+    onEgoistic();
     // 开启鼠标实时追踪
     setMouseTracking(true);
     // 展示窗口
@@ -171,9 +169,14 @@ const QPixmap *OEScreenshot::getGlobalScreen(void) {
 }
 void OEScreenshot::onEgoistic(void)
 {
+    // 窗口置顶
 #ifdef Q_OS_WIN32
     SetWindowPos((HWND)this->winId(),HWND_TOPMOST,this->pos().x(),this->pos().y(),this->width(),this->height(),SWP_SHOWWINDOW);
-#endif //要在windows上不获取焦点切置顶，必须用Windows API
+#else
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::WindowStaysOnTopHint;
+    setWindowFlags(flags);
+#endif
 }
 
 /*
@@ -243,6 +246,8 @@ void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
     if (e->button() == Qt::RightButton) {
         if (screenTool_ != nullptr) {
             rectTool_->hide();
+            amplifierTool_->onPostionChange(x(), y());
+            amplifierTool_->show();
             return destroyScreen();
         }
         close();
@@ -278,6 +283,8 @@ void OEScreenshot::mouseMoveEvent(QMouseEvent *e) {
     }
     else if (isLeftPressed_ == false
              && false == OEScreen::state()){
+        // 霸道置顶
+        onEgoistic();
 
         // 获取当前鼠标选中的窗口
         ::EnableWindow((HWND)winId(), FALSE);
@@ -287,7 +294,6 @@ void OEScreenshot::mouseMoveEvent(QMouseEvent *e) {
                             windowRect_.width(), windowRect_.height());
         ::EnableWindow((HWND)winId(), TRUE);
         amplifierTool_->onSizeChange(windowRect_.width(),windowRect_.height());
-        amplifierTool_->show();
         emit findChildWind(windowRect_);
         update();
     }
@@ -318,5 +324,7 @@ void OEScreenshot::keyPressEvent(QKeyEvent *e) {
     if (e->key() == Qt::Key_Escape) {
         close();
     }
+    else {
+        e->ignore();
+    }
 }
-

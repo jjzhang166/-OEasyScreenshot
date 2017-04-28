@@ -152,7 +152,6 @@ void OEScreen::mouseReleaseEvent(QMouseEvent * e) {
     if (e->button() == Qt::LeftButton) {
         isPressed_ = false;
         if(direction_ != NONE) {
-            releaseMouse();
             setCursor(QCursor(Qt::SizeAllCursor));
         }
     }

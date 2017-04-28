@@ -156,7 +156,9 @@ private:
     QRect windowRect_;
     // 截屏实例对象
     static OEScreenshot *self_;
+    // 置顶定时器
     QTimer* egoisticTimer_;
+    bool isTop_;
 
 private slots:
 

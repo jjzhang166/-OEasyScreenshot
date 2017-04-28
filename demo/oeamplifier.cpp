@@ -69,7 +69,6 @@ void OEAmplifier::onPostionChange(int x, int y) {
     }
 
     move(dest_x, dest_y);
-    show();
 }
 
 
