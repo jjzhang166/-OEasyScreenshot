@@ -257,7 +257,7 @@ void OEScreenshot::mouseMoveEvent(QMouseEvent *e) {
     else if (isLeftPressed_ == false
              && false == OEScreen::state()){
         ::EnableWindow((HWND)winId(), FALSE);
-        OECommonHelper::getSmallestWindowFromCursor(windowRect_);
+        OECommonHelper::getCurrentWindowFromCursor(windowRect_);
         ::EnableWindow((HWND)winId(), TRUE);
         emit findChildWind(windowRect_);
         update();
