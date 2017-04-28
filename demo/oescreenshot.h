@@ -17,7 +17,18 @@
         https://git.oschina.net/Mr_ChenLuYong/screenshot
 
    开源社区的所有人都期待与你的共同维护。
+
+
+   如果你对这些代码还有不理解的地方可以通过最新的文章进行学习：
+
+        博客地址：http://blog.csdn.net/csnd_ayo
+
+        文章地址：http://blog.csdn.net/csnd_ayo/article/details/70197915
+
+	期待你提交Bug，欢迎Issues。
+
 */
+
 
 
 #ifndef OESCREENSHOT_H
