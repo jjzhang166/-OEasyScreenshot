@@ -193,7 +193,7 @@ OEScreen *OEScreenshot::createScreen(const QPoint &pos) {
     return screenTool_;
 }
 
-void OEScreenshot::delScreen() {
+void OEScreenshot::destroyScreen() {
     if (screenTool_ != nullptr) {
         // 断开信号资源
         disconnect (this, SIGNAL(cursorPosChange(int,int)),
@@ -221,17 +221,20 @@ void OEScreenshot::mousePressEvent(QMouseEvent *e) {
 }
 
 void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
-    if (e->button() == Qt::RightButton
-        || startPoint_ == e->pos()) {
+    if (e->button() == Qt::RightButton) {
         if (screenTool_ != nullptr) {
             rectTool_->hide();
-            return delScreen();
+            return destroyScreen();
         }
         close();
         return ;
     }
     else if (isLeftPressed_ == true
              && e->button() == Qt::LeftButton) {
+        if (startPoint_ == e->pos()) {
+            rectTool_->hide();
+            return destroyScreen();
+        }
         isLeftPressed_ = false;
     }
     QWidget::mouseReleaseEvent(e);

@@ -54,7 +54,6 @@ public:
      * 功能：窗口实例
      * 函数：Instance
      * 返回：OEScreenshot
-     * 作者：陈鲁勇
      * 时间：2017年04月15日
      */
     static OEScreenshot *Instance();
@@ -71,7 +70,6 @@ protected:
      * 功能：获得当前屏幕的大小
      * 函数：getScreenRect
      * 返回：QRect
-     * 作者：陈鲁勇
      * 时间：2017年04月15日
      */
     const QRect& getScreenRect(void);
@@ -80,7 +78,6 @@ protected:
      * 获得屏幕的原画
      * 函数：getGlobalScreen
      * 返回：QPixmap* 指针
-     * 作者：陈鲁勇
      * 时间：2017年04月15日
      */
     const QPixmap* getGlobalScreen(void);
@@ -90,7 +87,6 @@ private:
     /*
      * 初始化放大镜 (色彩采集器)
      * 函数：initAmplifier
-     * 作者：陈鲁勇
      * 时间：2017年04月15日
      */
     void initAmplifier(void);
@@ -98,7 +94,6 @@ private:
     /*
      * 测量控件 (大小感知器)
      * 函数：initMeasureWidget
-     * 作者：陈鲁勇
      * 时间：2017年04月27日
      */
     void initMeasureWidget(void);
@@ -107,7 +102,6 @@ private:
      * 初始化截屏背景
      * 函数：initGlobalScreen
      * 返回：QPixmap 经过暗色处理的屏幕图
-     * 作者：陈鲁勇
      * 时间：2017年04月15日
      */
     const QPixmap* initGlobalScreen(void);
@@ -116,7 +110,6 @@ private:
      * 初始化鼠标
      * 函数：initCursor
      * 参数：_ico 鼠标图片的资源文件
-     * 作者：陈鲁勇
      * 时间：2017年04月15日
      */
     void initCursor(const QString& _ico);
@@ -126,14 +119,12 @@ private:
      * 函数：createScreen
      * 参数：pos 截图器的窗口起始位置
      * 返回：截图器实例
-     * 作者：陈鲁勇
      * 时间：2017年04月16日
      */
     OEScreen* createScreen(const QPoint &pos);
     /*
      * 摧毁截图器
      * 函数：delScreen
-     * 作者：陈鲁勇
      * 时间：2017年04月16日
      */
     void destroyScreen(void);

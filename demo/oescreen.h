@@ -115,7 +115,6 @@ public slots:
      * 函数：onSizeChange
      * 参数：w 宽度
      * 参数：h 高度
-     * 作者：陈鲁勇
      * 时间：2017年04月16日
      */
     void onMouseChange(int w,int h);
@@ -123,7 +122,6 @@ public slots:
     /*
      * 功能：保存屏幕到剪切板中
      * 函数：onSaveScreenOther
-     * 作者：陈鲁勇
      * 时间：2017年04月16日
      */
     void onSaveScreen(void);
@@ -133,7 +131,6 @@ protected slots:
     /*
      * 功能：保存编辑屏幕到其他路径下
      * 函数：onSaveScreenOther
-     * 作者：陈鲁勇
      * 时间：2017年04月16日
      */
     void onSaveScreenOther(void);
@@ -141,7 +138,6 @@ protected slots:
     /*
      * 功能：退出当前截图窗口
      * 函数：quitApp
-     * 作者：陈鲁勇
      * 时间：2017年04月16日
      */
     void quitScreenshot(void);
