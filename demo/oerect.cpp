@@ -31,7 +31,7 @@ OERect::OERect(QWidget *parent) : QWidget(parent) {
     backgroundPixmap_ = new QPixmap(width(),height());
     backgroundPixmap_->fill((QColor(8, 8, 8, 160)));
 
-    setFixedSize(95 * OECommonHelper::getWindowWidthMultiplyingPower(),
+    setFixedSize(95 * OECommonHelper::getWindowHeightMultiplyingPower(),
                  20 * OECommonHelper::getWindowHeightMultiplyingPower());
     hide();
 }
