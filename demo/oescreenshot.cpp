@@ -258,6 +258,9 @@ void OEScreenshot::mouseMoveEvent(QMouseEvent *e) {
              && false == OEScreen::state()){
         ::EnableWindow((HWND)winId(), FALSE);
         OECommonHelper::getCurrentWindowFromCursor(windowRect_);
+        QPoint temp_pt = mapFromGlobal(QPoint(windowRect_.x(), windowRect_.y()));
+        windowRect_ = QRect(temp_pt.x(), temp_pt.y(),
+                            windowRect_.width(), windowRect_.height());
         ::EnableWindow((HWND)winId(), TRUE);
         emit findChildWind(windowRect_);
         update();

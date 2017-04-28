@@ -124,7 +124,7 @@ bool OECommonHelper::getCurrentWindowFromCursor(QRect &out_rect)
     if (hwnd != NULL) {
         RECT temp_window;
         ::GetWindowRect(hwnd, &temp_window);
-        out_rect.setRect(temp_window.left,temp_window.top,
+        out_rect.setRect(temp_window.left, temp_window.top,
                          temp_window.right - temp_window.left,
                          temp_window.bottom - temp_window.top);
         return true;
