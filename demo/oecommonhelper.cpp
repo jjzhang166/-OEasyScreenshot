@@ -17,24 +17,21 @@
 float OECommonHelper::widthMultiplyingPower_ = 0;
 float OECommonHelper::heightMultiplyingPower_ = 0;
 
-void OECommonHelper::setStyle(const QString &style)
-{
+void OECommonHelper::setStyle(const QString &style) {
     QFile qss(style);
     qss.open(QFile::ReadOnly);
     qApp->setStyleSheet(qss.readAll());
     qss.close();
 }
 
-void OECommonHelper::setLanguagePack(const QString &language)
-{
+void OECommonHelper::setLanguagePack(const QString &language) {
     // 加载中文包
     QTranslator translator;
     translator.load(language);
     qApp->installTranslator(&translator);
 }
 
-void OECommonHelper::moveCenter(QWidget *widget, QRect parentRect)
-{
+void OECommonHelper::moveCenter(QWidget *widget, QRect parentRect) {
     if (parentRect.isEmpty()) {
         parentRect = QApplication::desktop()->rect();
     }
@@ -42,24 +39,21 @@ void OECommonHelper::moveCenter(QWidget *widget, QRect parentRect)
           ((parentRect.height() - widget->height()) >> 1));
 }
 
-const float &OECommonHelper::getWindowWidthMultiplyingPower()
-{
+const float &OECommonHelper::getWindowWidthMultiplyingPower() {
     if (widthMultiplyingPower_ == 0) {
         upWindowSizeMultiplyingPower();
     }
     return widthMultiplyingPower_;
 }
 
-const float & OECommonHelper::getWindowHeightMultiplyingPower()
-{
+const float & OECommonHelper::getWindowHeightMultiplyingPower() {
     if (heightMultiplyingPower_ == 0) {
         upWindowSizeMultiplyingPower();
     }
     return heightMultiplyingPower_;
 }
 
-void OECommonHelper::upWindowSizeMultiplyingPower()
-{
+void OECommonHelper::upWindowSizeMultiplyingPower() {
    QSize temp_size = QApplication::desktop()->size();
    widthMultiplyingPower_ = (float)temp_size.width()
            / (float)WINDOW_BASESIZE_WIDTH;

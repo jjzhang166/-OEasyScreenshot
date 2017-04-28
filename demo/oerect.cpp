@@ -4,10 +4,9 @@
 #include <QDebug>
 #endif
 #include "oecommonhelper.h"
-OERect::OERect(QWidget *parent) : QWidget(parent)
-{
+OERect::OERect(QWidget *parent) : QWidget(parent) {
     backgroundPixmap_ = new QPixmap(width(),height());
-    backgroundPixmap_->fill((QColor(0, 174, 255, 60)));
+    backgroundPixmap_->fill((QColor(8, 8, 8, 160)));
 
     setFixedSize(95 * OECommonHelper::getWindowWidthMultiplyingPower(),
                  20 * OECommonHelper::getWindowHeightMultiplyingPower());
