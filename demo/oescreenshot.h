@@ -136,7 +136,7 @@ private:
      * 作者：陈鲁勇
      * 时间：2017年04月16日
      */
-    void delScreen(void);
+    void destroyScreen(void);
 
 private:
 
