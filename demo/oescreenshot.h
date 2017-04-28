@@ -143,7 +143,10 @@ private:
     QPixmap *originPainting_;
     // 截图屏幕
     OEScreen* screenTool_;
+    // 截图器大小感知器
     OERect* rectTool_;
+    // 当前鼠标选区最小的矩形窗口
+    QRect windowRect_;
     // 截屏实例对象
     static OEScreenshot *self_;
 };

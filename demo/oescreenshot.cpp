@@ -232,8 +232,7 @@ void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
     else if (isLeftPressed_ == true
              && e->button() == Qt::LeftButton) {
         if (startPoint_ == e->pos()) {
-            rectTool_->hide();
-            return destroyScreen();
+            screenTool_->setGeometry(windowRect_);
         }
         isLeftPressed_ = false;
     }
