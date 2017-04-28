@@ -67,7 +67,4 @@ HEADERS  += oescreenshot.h \
     oerect.h \
     oecommonhelper.h
 
-RESOURCES += \
-    screen.qrc
-
 DISTFILES +=

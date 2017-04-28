@@ -128,7 +128,7 @@ private:
      * 参数：_ico 鼠标图片的资源文件
      * 时间：2017年04月15日
      */
-    void initCursor(const QString& _ico);
+    void initCursor(const QString& _ico = "");
 
     /*
      * 获得截图器
