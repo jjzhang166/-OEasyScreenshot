@@ -287,7 +287,6 @@ void OEScreen::paintEvent(QPaintEvent *) {
     pen.setWidth(4); //改变点的宽度
     pen.setColor(Qt::red);
     painter.setPen(pen);
-
     painter.drawPoints(listMarker_);
 }
 
