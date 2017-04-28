@@ -199,7 +199,7 @@ void OEScreen::mouseMoveEvent(QMouseEvent * e) {
             case RIGHT:
                 return onMouseChange(global_x, prightbottom.y() + 1);
             case UP:
-                return onMouseChange(global_x, gloPoint.y());
+                return onMouseChange(ptopleft.x(), gloPoint.y());
             case DOWN:
                 return onMouseChange(prightbottom.x() + 1, gloPoint.y());
             case LEFTTOP:
