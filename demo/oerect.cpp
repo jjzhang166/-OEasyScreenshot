@@ -52,6 +52,7 @@ void OERect::onPostionChange(int x, int y) {
         this->raise();
     }
     move(x, ((ry < 0) ? y : ry));
+    show();
 }
 
 void OERect::onSizeChange(int w, int h) {
