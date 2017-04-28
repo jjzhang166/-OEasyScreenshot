@@ -66,8 +66,6 @@ public:
     explicit OEScreen(QPixmap* originPainting, QPoint pos, QWidget *parent = 0);
 
     bool state(void) { return isInit_; }
-    void done(void) { isInit_ = true; }
-    void stop(void) { isInit_ = false; }
 
     void setOriginPoint(const QPoint& pt) {originPoint_ = pt;}
 protected:

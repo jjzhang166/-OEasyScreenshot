@@ -231,7 +231,7 @@ void OEScreen::resizeEvent(QResizeEvent *) {
 
 void OEScreen::showEvent(QShowEvent *)
 {
-
+    isInit_ = true;
 }
 
 void OEScreen::hideEvent(QHideEvent *)
