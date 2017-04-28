@@ -65,7 +65,11 @@ public:
 
     explicit OEScreen(QPixmap* originPainting, QPoint pos, QWidget *parent = 0);
 
+    bool state(void) { return isInit_; }
     void done(void) { isInit_ = true; }
+    void stop(void) { isInit_ = false; }
+
+    void setOriginPoint(const QPoint& pt) {originPoint_ = pt;}
 protected:
 
     /*
@@ -84,6 +88,12 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
 
+    virtual void moveEvent(QMoveEvent *);
+    virtual void resizeEvent(QResizeEvent *);
+
+
+    virtual void showEvent(QShowEvent *);
+    virtual void hideEvent(QHideEvent *);
     virtual void enterEvent(QEvent *e);
     virtual void leaveEvent(QEvent *e);
 

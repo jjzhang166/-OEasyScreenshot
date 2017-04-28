@@ -50,8 +50,11 @@ OEScreen::OEScreen(QPixmap *originPainting, QPoint pos, QWidget *parent)
             this, SLOT(onSaveScreen()));
 
     // 设置成无边框对话框
-    this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowSystemMenuHint);
-    this->setMouseTracking(true);
+    setWindowFlags(Qt::FramelessWindowHint|Qt::WindowSystemMenuHint);
+    // 开启鼠标实时追踪
+    setMouseTracking(true);
+    // 默认隐藏
+    hide();
 }
 
 OEScreen::DIRECTION OEScreen::getRegion(const QPoint &cursor) {
@@ -212,11 +215,31 @@ void OEScreen::mouseMoveEvent(QMouseEvent * e) {
             // 窗口的移动
             move(e->globalPos() - movePos_);
             movePos_ = e->globalPos() - pos();
-            emit postionChange(pos().x(),pos().y());
             e->accept();
         }
     }
     currentRect_ = geometry();
+}
+
+void OEScreen::moveEvent(QMoveEvent *) {
+    emit postionChange(x(), y());
+}
+
+void OEScreen::resizeEvent(QResizeEvent *) {
+    emit sizeChange(width(), height());
+}
+
+void OEScreen::showEvent(QShowEvent *)
+{
+
+}
+
+void OEScreen::hideEvent(QHideEvent *)
+{
+    currentRect_ = {};
+    movePos_ = {};
+    originPoint_ = {};
+    isInit_ = false;
 }
 
 void OEScreen::enterEvent(QEvent *e) {
@@ -299,10 +322,8 @@ void OEScreen::onMouseChange(int w, int h) {
 
     // 改变大小
     currentRect_ = QRect(rx, ry, rw, rh);
-    emit sizeChange(rw, rh);
 
     this->setGeometry(currentRect_);
-    emit postionChange(currentRect_.x(),currentRect_.y());
     // 改变大小后更新父窗口，防止父窗口未及时刷新而导致的问题
     parentWidget()->update();
 }
