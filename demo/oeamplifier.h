@@ -29,11 +29,31 @@ class OEAmplifier : public QWidget
 {
     Q_OBJECT
 public:
-    explicit OEAmplifier(QWidget *parent = 0);
+    explicit OEAmplifier(QPixmap* originPainting, QWidget *parent = 0);
 
 signals:
 
 public slots:
+
+    void onSizeChange(int w, int h);
+
+    void onPostionChange(int x, int y);
+
+protected:
+
+    virtual void paintEvent(QPaintEvent *);
+
+private:
+
+
+    QSize parentSize_;
+    QSize screenSize_;
+    QPoint cursorPoint_;
+    int sideLength_;
+    int imageHeight_;
+    // 屏幕原画
+    QPixmap *originPainting_;
+
 };
 
 #endif // OEAMPLIFIER_H

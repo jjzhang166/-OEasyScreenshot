@@ -28,6 +28,7 @@
 class OEScreen;
 class OERect;
 class OEAmplifier;
+class QTimer;
 
 /*
 * 截屏功能的主要入口
@@ -67,6 +68,7 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *e);
     virtual void mouseMoveEvent(QMouseEvent *e);
     virtual void paintEvent(QPaintEvent *);
+    virtual void keyPressEvent(QKeyEvent *e);
 
     /*
      * 功能：获得当前屏幕的大小
@@ -83,6 +85,7 @@ protected:
      * 时间：2017年04月15日
      */
     const QPixmap* getGlobalScreen(void);
+
 
 private:
 
@@ -147,10 +150,22 @@ private:
     OEScreen* screenTool_;
     // 截图器大小感知器
     OERect* rectTool_;
+    // 放大取色器
+    OEAmplifier* amplifierTool_;
     // 当前鼠标选区最小的矩形窗口
     QRect windowRect_;
     // 截屏实例对象
     static OEScreenshot *self_;
+    QTimer* egoisticTimer_;
+
+private slots:
+
+    /*
+     * Window下霸道置顶（唯我独尊）
+     * 函数：onEgoistic
+     * 时间：2017年04月28日
+     */
+    void onEgoistic(void);
 };
 
 

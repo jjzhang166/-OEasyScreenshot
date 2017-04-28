@@ -29,6 +29,7 @@
 #include <QMouseEvent>
 #include <QCursor>
 #include <QMutex>
+#include <QTimer>
 #ifndef QT_NO_DEBUG
 #include <QDebug>
 #endif
@@ -42,7 +43,7 @@
 
 OEScreenshot * OEScreenshot::self_ = nullptr;
 
-OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),
+OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),isLeftPressed_ (false),
     backgroundScreen_(nullptr), originPainting_(nullptr),screenTool_(nullptr)
 {
     // 初始化鼠标
@@ -54,9 +55,9 @@ OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),
     // 初始化大小感知器
     initMeasureWidget();
     // 窗口置顶
-    Qt::WindowFlags flags = windowFlags();
-    flags |= Qt::WindowStaysOnTopHint;
-    setWindowFlags(flags);
+    egoisticTimer_ = new QTimer();
+    egoisticTimer_->start(200); //程序每隔1秒置顶一次
+    connect(egoisticTimer_, SIGNAL(timeout()), this, SLOT(onEgoistic()));
     // 全屏窗口
     showFullScreen();
     // 窗口与显示屏对齐
@@ -67,7 +68,7 @@ OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),
     show();
 }
 
-OEScreenshot::~OEScreenshot()
+OEScreenshot::~OEScreenshot(void)
 {
     if (backgroundScreen_ != nullptr) {
         delete backgroundScreen_;
@@ -79,7 +80,7 @@ OEScreenshot::~OEScreenshot()
  * 功能：窗口实例
  * 返回：OEScreenshot
  */
-OEScreenshot *OEScreenshot::Instance() {
+OEScreenshot *OEScreenshot::Instance(void) {
     static QMutex mutex;
     if (!self_) {
        QMutexLocker locker(&mutex);
@@ -99,11 +100,16 @@ void OEScreenshot::mouseDoubleClickEvent(QMouseEvent *)
 /*
  * 初始化放大镜 (色彩采集器)
  */
-void OEScreenshot::initAmplifier() {
-
+void OEScreenshot::initAmplifier(void) {
+    amplifierTool_ = new OEAmplifier(originPainting_, this);
+    connect(this,SIGNAL(cursorPosChange(int,int)),
+            amplifierTool_, SLOT(onPostionChange(int,int)));
+    amplifierTool_->onPostionChange(x(), y());
+    amplifierTool_->show();
+    amplifierTool_->raise();
 }
 
-void OEScreenshot::initMeasureWidget()
+void OEScreenshot::initMeasureWidget(void)
 {
     rectTool_ = new OERect(this);
     rectTool_->raise();
@@ -112,7 +118,7 @@ void OEScreenshot::initMeasureWidget()
 /*
  * 功能：获得当前屏幕的大小
  */
-const QRect &OEScreenshot::getScreenRect() {
+const QRect &OEScreenshot::getScreenRect(void) {
     if (!desktopRect_.isEmpty()) {
         return desktopRect_;
     }
@@ -131,7 +137,7 @@ const QRect &OEScreenshot::getScreenRect() {
     return desktopRect_;
 }
 
-const QPixmap *OEScreenshot::initGlobalScreen() {
+const QPixmap *OEScreenshot::initGlobalScreen(void) {
     if (backgroundScreen_ != nullptr) {
         return backgroundScreen_;
     }
@@ -152,7 +158,7 @@ const QPixmap *OEScreenshot::initGlobalScreen() {
  * 获得屏幕的原画
  * 返回：QPixmap* 指针
  */
-const QPixmap *OEScreenshot::getGlobalScreen() {
+const QPixmap *OEScreenshot::getGlobalScreen(void) {
     if (originPainting_ == nullptr) {
         // 截取当前桌面，作为截屏的背景图
         QScreen *screen = QGuiApplication::primaryScreen();
@@ -162,6 +168,12 @@ const QPixmap *OEScreenshot::getGlobalScreen() {
                             temp_rect.height()));
     }
     return originPainting_;
+}
+void OEScreenshot::onEgoistic(void)
+{
+#ifdef Q_OS_WIN32
+    SetWindowPos((HWND)this->winId(),HWND_TOPMOST,this->pos().x(),this->pos().y(),this->width(),this->height(),SWP_SHOWWINDOW);
+#endif //要在windows上不获取焦点切置顶，必须用Windows API
 }
 
 /*
@@ -181,13 +193,17 @@ void OEScreenshot::initCursor(const QString& _ico) {
 OEScreen *OEScreenshot::createScreen(const QPoint &pos) {
     if (screenTool_ == nullptr) {
         screenTool_ = new OEScreen(originPainting_, pos, this);
-        // 建立截图器大小关联
         connect (this, SIGNAL(cursorPosChange(int,int)),
                  screenTool_,SLOT(onMouseChange(int,int)));
+        // 建立主界面双击保存信号关联
         connect (this, SIGNAL(doubleClick()),
                  screenTool_,SLOT(onSaveScreen()));
+        // 建立截图器大小关联
         connect(screenTool_, SIGNAL(sizeChange(int,int)),
                 rectTool_, SLOT(onSizeChange(int,int)));
+        connect(screenTool_, SIGNAL(sizeChange(int,int)),
+                amplifierTool_, SLOT(onSizeChange(int,int)));
+        // 建立截图器与感知器的位置关联
         connect(screenTool_, SIGNAL(postionChange(int,int)),
                 rectTool_, SLOT(onPostionChange(int,int)));
 
@@ -201,8 +217,6 @@ OEScreen *OEScreenshot::createScreen(const QPoint &pos) {
 void OEScreenshot::destroyScreen() {
     if (screenTool_ != nullptr) {
         // 断开信号资源
-        disconnect (this, SIGNAL(cursorPosChange(int,int)),
-                screenTool_,SLOT(onMouseChange(int,int)));
         disconnect (this, SIGNAL(doubleClick()),
                 screenTool_,SLOT(onSaveScreen()));
         disconnect(screenTool_, SIGNAL(sizeChange(int,int)),
@@ -217,7 +231,6 @@ void OEScreenshot::destroyScreen() {
         return;
     }
 }
-
 
 void OEScreenshot::mousePressEvent(QMouseEvent *e) {
     if (e->button() == Qt::LeftButton) {
@@ -244,24 +257,37 @@ void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
             screenTool_->show();
             windowRect_ = {};
         }
+        // 断开鼠标移动的信号
+        disconnect (this, SIGNAL(cursorPosChange(int,int)),
+                screenTool_,SLOT(onMouseChange(int,int)));
+        // 隐藏放大器
+        amplifierTool_->hide();
+        // 断开截图器的大小修改信号
+        disconnect (screenTool_, SIGNAL(sizeChange(int,int)),
+                amplifierTool_,SLOT(onSizeChange(int,int)));
         isLeftPressed_ = false;
     }
     QWidget::mouseReleaseEvent(e);
 }
 void OEScreenshot::mouseMoveEvent(QMouseEvent *e) {
+    emit cursorPosChange(e->x(), e->y());
     if (isLeftPressed_) {
-        emit cursorPosChange(e->x(), e->y());
+        amplifierTool_->raise();
         windowRect_ = {};
         update();
     }
     else if (isLeftPressed_ == false
              && false == OEScreen::state()){
+
+        // 获取当前鼠标选中的窗口
         ::EnableWindow((HWND)winId(), FALSE);
         OECommonHelper::getCurrentWindowFromCursor(windowRect_);
         QPoint temp_pt = mapFromGlobal(QPoint(windowRect_.x(), windowRect_.y()));
         windowRect_ = QRect(temp_pt.x(), temp_pt.y(),
                             windowRect_.width(), windowRect_.height());
         ::EnableWindow((HWND)winId(), TRUE);
+        amplifierTool_->onSizeChange(windowRect_.width(),windowRect_.height());
+        amplifierTool_->show();
         emit findChildWind(windowRect_);
         update();
     }
@@ -286,3 +312,11 @@ void OEScreenshot::paintEvent(QPaintEvent *) {
            *originPainting_, windowRect_);
     }
 }
+
+void OEScreenshot::keyPressEvent(QKeyEvent *e) {
+    // Esc 键退出截图;
+    if (e->key() == Qt::Key_Escape) {
+        close();
+    }
+}
+
