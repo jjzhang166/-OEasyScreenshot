@@ -92,15 +92,28 @@ void OEAmplifier::paintEvent(QPaintEvent *) {
     QPixmap endPointImage;
     /// 绘制放大图;
     const QSize& parent_size = parentWidget()->size();
+    /**
+     * @bug   : 在屏幕边缘绘制放大图时会出现图片拉伸
+     *          这里暂时做了边缘检测，若是屏幕边缘则不进行放大图的绘制，和QQ截图的采取方式是一致的。
+     *
+     * @marker: 颜色还是照样识别，但是局部放大的效果暂时禁用
+     *
+     * @note  : 解决方法，可以发现边缘时，将不能放大的地方，不描绘，或填充黑色，以避免图片被非预期的拉伸问题。
+     */
     if ((cursorPoint_.x() + 15 < parent_size.width() && cursorPoint_.x() - 15 > 0)
       && (cursorPoint_.y() + 11 < parent_size.height() && cursorPoint_.y() - 11 > 0)) {
         endPointImage = originPainting_->
                 copy(QRect(cursorPoint_.x() - 15,
                      cursorPoint_.y() - 11, 30, 22))
                 .scaled(sideLength_, imageHeight_);
+        painter.drawPixmap(0,0, endPointImage);
+    }
+    else {
+        endPointImage = originPainting_->
+                copy(QRect(cursorPoint_.x() - 15,
+                     cursorPoint_.y() - 11, 30, 22));
     }
 
-    painter.drawPixmap(0,0, endPointImage);
 
     /// 绘制十字
     painter.setPen(QPen(QColor(0, 180, 255 , 180), 4));
