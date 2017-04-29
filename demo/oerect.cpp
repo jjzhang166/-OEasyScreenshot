@@ -38,13 +38,15 @@
 #include "oecommonhelper.h"
 
 OERect::OERect(QWidget *parent) : QWidget(parent) {
-    /// 填充默认背景
-    backgroundPixmap_ = new QPixmap(width(),height());
-    backgroundPixmap_->fill((QColor(8, 8, 8, 160)));
 
     /// 设置感知器默认大小
     setFixedSize(95 * OECommonHelper::getWindowHeightMultiplyingPower(),
                  20 * OECommonHelper::getWindowHeightMultiplyingPower());
+
+    /// 填充默认背景
+    backgroundPixmap_.reset(new QPixmap(width(),height()));
+    backgroundPixmap_->fill((QColor(8, 8, 8, 160)));
+
     /// 默认隐藏
     hide();
 }

@@ -31,6 +31,8 @@
 #ifndef OESCREENSHOT_H
 #define OESCREENSHOT_H
 
+#include <memory>
+
 #include <QWidget>
 
 class OEScreen;
@@ -106,11 +108,16 @@ protected:
      * @brief : 鼠标移动事件
      */
     virtual void mouseMoveEvent(QMouseEvent *e);
+
     /**
-     * @brief : 按键事件
+     * @brief : 按键按下事件
      */
     virtual void keyPressEvent(QKeyEvent *e);
 
+    /**
+     * @brief : 按键弹起事件
+     */
+    virtual void keyReleaseEvent(QKeyEvent *);
     /**
      * @brief : 自绘事件
      */
@@ -126,7 +133,7 @@ private:
      * @date  : 2017年04月15日
      * @remark: 需先行调用getGlobalScreen。
      */
-    void initAmplifier(QPixmap* originPainting = nullptr);
+    void initAmplifier(std::shared_ptr<QPixmap> originPainting = nullptr);
 
     /**
      * @brief : 测量控件 (大小感知器)
@@ -139,7 +146,7 @@ private:
      * @return: QPixmap 经过暗色处理的屏幕图
      * @date  : 2017年04月15日
      */
-    const QPixmap* initGlobalScreen(void);
+    std::shared_ptr<QPixmap> initGlobalScreen(void);
 
 
     /**
@@ -158,7 +165,7 @@ private:
      * @date  : 2017年04月16日
      * @remark: 创建截图器前，需要创建相关的组件，(例：大小感知器，放大取色器)
      */
-    OEScreen* createScreen(const QPoint &pos);
+    std::shared_ptr<OEScreen> createScreen(const QPoint &pos);
 
     /**
      * @brief : 摧毁截图器
@@ -183,7 +190,7 @@ private:
      * @date  : 2017年04月15日
      * @remark: 若想重新获得屏幕原画，需要清理原有资源
      */
-    const QPixmap* getGlobalScreen(void);
+    std::shared_ptr<QPixmap> getGlobalScreen(void);
 
 
 private:
@@ -195,15 +202,15 @@ private:
     /// 当前桌面屏幕的矩形数据
     QRect desktopRect_;
     /// 屏幕暗色背景图
-    QPixmap *backgroundScreen_;
+    std::shared_ptr<QPixmap> backgroundScreen_;
     /// 屏幕原画
-    QPixmap *originPainting_;
+    std::shared_ptr<QPixmap> originPainting_;
     /// 截图屏幕
-    OEScreen* screenTool_;
+    std::shared_ptr<OEScreen> screenTool_;
     /// 截图器大小感知器
-    OERect* rectTool_;
+    std::shared_ptr<OERect> rectTool_;
     /// 放大取色器
-    OEAmplifier* amplifierTool_;
+    std::shared_ptr<OEAmplifier> amplifierTool_;
     /// 当前鼠标选区最小的矩形窗口
     QRect windowRect_;
     /// 截屏实例对象

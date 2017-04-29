@@ -42,7 +42,7 @@
 
 #include "oecommonhelper.h"
 
-OEAmplifier::OEAmplifier(QPixmap *originPainting, QWidget *parent) :
+OEAmplifier::OEAmplifier(std::shared_ptr<QPixmap> originPainting, QWidget *parent) :
     QWidget(parent), originPainting_(originPainting) {
     /// 设置成无边框对话框
     setWindowFlags(Qt::FramelessWindowHint|Qt::WindowSystemMenuHint);
@@ -89,11 +89,16 @@ void OEAmplifier::paintEvent(QPaintEvent *) {
     /// 绘制背景
     painter.fillRect(rect(), QColor(0, 0, 0, 160));
 
+    QPixmap endPointImage;
     /// 绘制放大图;
-    QPixmap endPointImage = originPainting_->
-            copy(QRect(cursorPoint_.x() - 15,
-                 cursorPoint_.y() - 11, 30, 22))
-            .scaled(sideLength_, imageHeight_);
+    const QSize& parent_size = parentWidget()->size();
+    if ((cursorPoint_.x() + 15 < parent_size.width() && cursorPoint_.x() - 15 > 0)
+      && (cursorPoint_.y() + 11 < parent_size.height() && cursorPoint_.y() - 11 > 0)) {
+        endPointImage = originPainting_->
+                copy(QRect(cursorPoint_.x() - 15,
+                     cursorPoint_.y() - 11, 30, 22))
+                .scaled(sideLength_, imageHeight_);
+    }
 
     painter.drawPixmap(0,0, endPointImage);
 

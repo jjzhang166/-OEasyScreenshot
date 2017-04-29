@@ -31,7 +31,7 @@
 
 #ifndef OEAMPLIFIER_H
 #define OEAMPLIFIER_H
-
+#include <memory>
 #include <QWidget>
 
 
@@ -44,7 +44,7 @@ class OEAmplifier : public QWidget
 {
     Q_OBJECT
 public:
-    explicit OEAmplifier(QPixmap* originPainting, QWidget *parent = 0);
+    explicit OEAmplifier(std::shared_ptr<QPixmap> originPainting, QWidget *parent = 0);
 
 signals:
 
@@ -86,7 +86,7 @@ private:
     /// 放大区的高度
     int imageHeight_;
     /// 屏幕原画
-    QPixmap *originPainting_;
+    std::shared_ptr<QPixmap> originPainting_;
 
 };
 

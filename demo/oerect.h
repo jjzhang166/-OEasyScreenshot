@@ -30,7 +30,7 @@
 
 #ifndef OERECT_H
 #define OERECT_H
-
+#include <memory>
 #include <QWidget>
 #include <QRect>
 
@@ -79,7 +79,7 @@ public slots:
 
 private:
     /// 背景色
-    QPixmap* backgroundPixmap_;
+    std::shared_ptr<QPixmap> backgroundPixmap_;
     /// 显示的文字信息
     QString info_;
 };

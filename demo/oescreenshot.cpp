@@ -106,10 +106,6 @@ OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),isLeftPressed_ (fa
 
 OEScreenshot::~OEScreenshot(void)
 {
-    if (backgroundScreen_ != nullptr) {
-        delete backgroundScreen_;
-        backgroundScreen_ = nullptr;
-    }
 }
 
 /**
@@ -136,14 +132,14 @@ void OEScreenshot::mouseDoubleClickEvent(QMouseEvent *)
 /**
  * 初始化放大镜 (色彩采集器)
  */
-void OEScreenshot::initAmplifier(QPixmap *originPainting) {
-    QPixmap*  temp_pm = originPainting;
+void OEScreenshot::initAmplifier(std::shared_ptr<QPixmap> originPainting) {
+    std::shared_ptr<QPixmap>  temp_pm = originPainting;
     if (temp_pm == nullptr) {
         temp_pm = originPainting_;
     }
-    amplifierTool_ = new OEAmplifier(temp_pm, this);
+    amplifierTool_.reset(new OEAmplifier(temp_pm, this));
     connect(this,SIGNAL(cursorPosChange(int,int)),
-            amplifierTool_, SLOT(onPostionChange(int,int)));
+            amplifierTool_.get(), SLOT(onPostionChange(int,int)));
     amplifierTool_->onPostionChange(x(), y());
     amplifierTool_->show();
     amplifierTool_->raise();
@@ -151,7 +147,7 @@ void OEScreenshot::initAmplifier(QPixmap *originPainting) {
 
 void OEScreenshot::initMeasureWidget(void)
 {
-    rectTool_ = new OERect(this);
+    rectTool_.reset(new OERect(this));
     rectTool_->raise();
 }
 
@@ -177,18 +173,18 @@ const QRect &OEScreenshot::getScreenRect(void) {
     return desktopRect_;
 }
 
-const QPixmap *OEScreenshot::initGlobalScreen(void) {
-    if (backgroundScreen_ != nullptr) {
+std::shared_ptr<QPixmap> OEScreenshot::initGlobalScreen(void) {
+    if (backgroundScreen_.get() != nullptr) {
         return backgroundScreen_;
     }
     /// 获得屏幕原画
-    const QPixmap* temp_screen = getGlobalScreen();
+    std::shared_ptr<QPixmap> temp_screen = getGlobalScreen();
 
     /// 制作暗色屏幕背景
     QPixmap temp_dim_pix(temp_screen->width(), temp_screen->height());
     temp_dim_pix.fill((QColor(0, 0, 0, 160)));
-    backgroundScreen_ = new QPixmap(*temp_screen);
-    QPainter p(backgroundScreen_);
+    backgroundScreen_.reset(new QPixmap(*temp_screen));
+    QPainter p(backgroundScreen_.get());
     p.drawPixmap(0, 0, temp_dim_pix);
 
     return backgroundScreen_;
@@ -198,14 +194,14 @@ const QPixmap *OEScreenshot::initGlobalScreen(void) {
  * 获得屏幕的原画
  * 返回：QPixmap* 指针
  */
-const QPixmap *OEScreenshot::getGlobalScreen(void) {
-    if (originPainting_ == nullptr) {
+std::shared_ptr<QPixmap> OEScreenshot::getGlobalScreen(void) {
+    if (originPainting_.get() == nullptr) {
         /// 截取当前桌面，作为截屏的背景图
         QScreen *screen = QGuiApplication::primaryScreen();
         const QRect& temp_rect = getScreenRect();
-        originPainting_ = new QPixmap(screen->grabWindow(0, temp_rect.x(),
+        originPainting_.reset(new QPixmap(screen->grabWindow(0, temp_rect.x(),
                             temp_rect.y(), temp_rect.width(),
-                            temp_rect.height()));
+                            temp_rect.height())));
     }
     return originPainting_;
 }
@@ -238,22 +234,24 @@ void OEScreenshot::initCursor(const QString& ico) {
     setCursor(cursor);
 }
 
-OEScreen *OEScreenshot::createScreen(const QPoint &pos) {
-    if (screenTool_ == nullptr) {
-        screenTool_ = new OEScreen(originPainting_, pos, this);
+std::shared_ptr<OEScreen> OEScreenshot::createScreen(const QPoint &pos) {
+    if (screenTool_.get() == nullptr) {
+        /// 创建截图器
+        screenTool_.reset(new OEScreen(originPainting_, pos, this));
+        /// 建立信号连接
         connect (this, SIGNAL(cursorPosChange(int,int)),
-                 screenTool_,SLOT(onMouseChange(int,int)));
+                 screenTool_.get(),SLOT(onMouseChange(int,int)));
         /// 建立主界面双击保存信号关联
         connect (this, SIGNAL(doubleClick()),
-                 screenTool_,SLOT(onSaveScreen()));
+                 screenTool_.get(),SLOT(onSaveScreen()));
         /// 建立截图器大小关联
-        connect(screenTool_, SIGNAL(sizeChange(int,int)),
-                rectTool_, SLOT(onSizeChange(int,int)));
-        connect(screenTool_, SIGNAL(sizeChange(int,int)),
-                amplifierTool_, SLOT(onSizeChange(int,int)));
+        connect(screenTool_.get(), SIGNAL(sizeChange(int,int)),
+                rectTool_.get(), SLOT(onSizeChange(int,int)));
+        connect(screenTool_.get(), SIGNAL(sizeChange(int,int)),
+                amplifierTool_.get(), SLOT(onSizeChange(int,int)));
         /// 建立截图器与感知器的位置关联
-        connect(screenTool_, SIGNAL(postionChange(int,int)),
-                rectTool_, SLOT(onPostionChange(int,int)));
+        connect(screenTool_.get(), SIGNAL(postionChange(int,int)),
+                rectTool_.get(), SLOT(onPostionChange(int,int)));
 
         /// 获得截图器当前起始位置
         startPoint_ = pos;
@@ -263,16 +261,16 @@ OEScreen *OEScreenshot::createScreen(const QPoint &pos) {
 }
 
 void OEScreenshot::destroyScreen() {
-    if (screenTool_ != nullptr) {
+    if (screenTool_.get() != nullptr) {
         /// 断开信号资源
         disconnect (this, SIGNAL(doubleClick()),
-                screenTool_,SLOT(onSaveScreen()));
-        disconnect(screenTool_, SIGNAL(sizeChange(int,int)),
-                rectTool_, SLOT(onSizeChange(int,int)));
-        disconnect(screenTool_, SIGNAL(postionChange(int,int)),
-                rectTool_, SLOT(onPostionChange(int,int)));
+                screenTool_.get(),SLOT(onSaveScreen()));
+        disconnect(screenTool_.get(), SIGNAL(sizeChange(int,int)),
+                rectTool_.get(), SLOT(onSizeChange(int,int)));
+        disconnect(screenTool_.get(), SIGNAL(postionChange(int,int)),
+                rectTool_.get(), SLOT(onPostionChange(int,int)));
         /// 清理工具
-        delete screenTool_;
+        screenTool_.reset();
         screenTool_ = nullptr;
         isLeftPressed_ = false;
         update();
@@ -289,7 +287,7 @@ void OEScreenshot::mousePressEvent(QMouseEvent *e) {
 
 void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
     if (e->button() == Qt::RightButton) {
-        if (screenTool_ != nullptr) {
+        if (screenTool_.get() != nullptr) {
             rectTool_->hide();
             amplifierTool_->onPostionChange(x(), y());
             amplifierTool_->show();
@@ -309,12 +307,12 @@ void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
         }
         /// 断开鼠标移动的信号
         disconnect (this, SIGNAL(cursorPosChange(int,int)),
-                screenTool_,SLOT(onMouseChange(int,int)));
+                screenTool_.get(),SLOT(onMouseChange(int,int)));
         /// 隐藏放大器
         amplifierTool_->hide();
         /// 断开截图器的大小修改信号
-        disconnect (screenTool_, SIGNAL(sizeChange(int,int)),
-                amplifierTool_,SLOT(onSizeChange(int,int)));
+        disconnect (screenTool_.get(), SIGNAL(sizeChange(int,int)),
+                amplifierTool_.get(),SLOT(onSizeChange(int,int)));
         isLeftPressed_ = false;
     }
     QWidget::mouseReleaseEvent(e);
@@ -334,7 +332,7 @@ void OEScreenshot::mouseMoveEvent(QMouseEvent *e) {
 
         /// 获取当前鼠标选中的窗口
         ::EnableWindow((HWND)winId(), FALSE);
-        OECommonHelper::getCurrentWindowFromCursor(windowRect_);
+        OECommonHelper::getSmallestWindowFromCursor(windowRect_);
         QPoint temp_pt = mapFromGlobal(QPoint(windowRect_.x(), windowRect_.y()));
         windowRect_ = QRect(temp_pt.x(), temp_pt.y(),
                             windowRect_.width(), windowRect_.height());
@@ -373,4 +371,10 @@ void OEScreenshot::keyPressEvent(QKeyEvent *e) {
     else {
         e->ignore();
     }
+
+}
+
+void OEScreenshot::keyReleaseEvent(QKeyEvent *)
+{
+
 }

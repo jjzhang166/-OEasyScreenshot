@@ -32,6 +32,7 @@
 #ifndef OESCREEN_H
 #define OESCREEN_H
 
+#include <memory>
 #include <QWidget>
 
 class QMenu;
@@ -90,7 +91,7 @@ protected:
 
 public:
 
-    explicit OEScreen(QPixmap* originPainting, QPoint pos, QWidget *parent = 0);
+    explicit OEScreen(std::shared_ptr<QPixmap> originPainting, QPoint pos, QWidget *parent = 0);
 
     ~OEScreen() { isInit_ = false; }
 
@@ -233,7 +234,7 @@ private:
     /// 标记锚点
     QPolygon listMarker_;
     /// 屏幕原画
-    QPixmap* originPainting_;
+    std::shared_ptr<QPixmap> originPainting_;
     /// 当前窗口几何数据 用于绘制截图区域
     QRect currentRect_;
     /// 右键菜单对象

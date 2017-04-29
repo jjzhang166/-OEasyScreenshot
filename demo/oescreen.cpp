@@ -46,7 +46,7 @@
 #endif
 
 bool OEScreen::isInit_ = false;
-OEScreen::OEScreen(QPixmap *originPainting, QPoint pos, QWidget *parent)
+OEScreen::OEScreen(std::shared_ptr<QPixmap> originPainting, QPoint pos, QWidget *parent)
     : QWidget(parent), direction_(NONE), originPoint_(pos),
       isPressed_(false), originPainting_(originPainting) {
     menu_ = new QMenu(this);
@@ -300,6 +300,7 @@ void OEScreen::paintEvent(QPaintEvent *) {
     painter.setPen(pen);
     painter.drawPoints(listMarker_);
 }
+
 
 const QString OEScreen::getFileName(void) {
     QString file_name = QDateTime::currentDateTime().toString("CSDN博客_瓯裔_yyyy-MM-dd-HH-mm-ss");
