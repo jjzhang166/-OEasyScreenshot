@@ -27,17 +27,6 @@ doc文档： [【点击下载】](http://git.oschina.net/Mr_ChenLuYong/screensho
 
 # 待开发功能
 
-- 标尺线
-
- ![开发功能示例图](https://git.oschina.net/uploads/images/2017/0430/110334_8566b551_870438.png "标尺线")
-
-- 设置界面
-
-     1.独立的设置界面
-
-     2.具备记忆功能（下次启动可以还原上次配置）
-
-
 - 全局热键
 
      1.能够全局响应
