@@ -1,30 +1,30 @@
-#版权所有 [2017] [瓯裔]
+#锟斤拷权锟斤拷锟斤拷 [2017] [锟斤拷锟斤拷]
 
-#   根据 Apache 许可证 2.0 版（以下简称“许可证”）授权；
-#   除非遵守本许可，否则您不能使用这个文件。
-#   您可以获得该许可的副本：
+#   锟斤拷锟斤拷 Apache 锟斤拷锟斤拷证 2.0 锟芥（锟斤拷锟铰硷拷锟狡★拷锟斤拷锟斤拷证锟斤拷锟斤拷锟斤拷权锟斤拷
+#   锟斤拷锟斤拷锟斤拷锟截憋拷锟斤拷锟缴ｏ拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷使锟斤拷锟斤拷锟斤拷锟侥硷拷锟斤拷
+#   锟斤拷锟斤拷锟皆伙拷锟矫革拷锟斤拷锟缴的革拷锟斤拷锟斤拷
 
 #        http://www.apache.org/licenses/LICENSE-2.0
 
 
-#   除非适用法律需要或者书面同意，按本许可分发的软件
-#   要按“原样”分发，没有任何形式的，明确或隐含的担保条款。
-#   参见按照本许可控制许可权限及限制的特定语言的许可证。
+#   锟斤拷锟斤拷锟斤拷锟矫凤拷锟斤拷锟斤拷要锟斤拷锟斤拷锟斤拷锟斤拷同锟解，锟斤拷锟斤拷锟斤拷锟缴分凤拷锟斤拷锟斤拷锟斤拷
+#   要锟斤拷锟斤拷原锟斤拷锟斤拷锟街凤拷锟斤拷没锟斤拷锟轿猴拷锟斤拷式锟侥ｏ拷锟斤拷确锟斤拷锟斤拷锟斤拷锟侥碉拷锟斤拷锟斤拷锟筋。
+#   锟轿硷拷锟斤拷锟秸憋拷锟斤拷锟缴匡拷锟斤拷锟斤拷锟斤拷权锟睫硷拷锟斤拷锟狡碉拷锟截讹拷锟斤拷锟皆碉拷锟斤拷锟斤拷证锟斤拷
 
-#   你可以获得该代码的最新版本：
+#   锟斤拷锟斤拷锟皆伙拷锟矫该达拷锟斤拷锟斤拷锟斤拷锟铰版本锟斤拷
 
 #        https://git.oschina.net/Mr_ChenLuYong/screenshot
 
-#   开源社区的所有人都期待与你的共同维护。
+#   锟斤拷源锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟剿讹拷锟节达拷锟斤拷锟斤拷锟侥癸拷同维锟斤拷锟斤拷
 
 
-#   如果你对这些代码还有不理解的地方可以通过最新的文章进行学习：
+#   锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷些锟斤拷锟诫还锟叫诧拷锟斤拷锟斤拷锟侥地凤拷锟斤拷锟斤拷通锟斤拷锟斤拷锟铰碉拷锟斤拷锟铰斤拷锟斤拷学习锟斤拷
 
-#        博客地址：http://blog.csdn.net/csnd_ayo
+#        锟斤拷锟酵碉拷址锟斤拷http://blog.csdn.net/csnd_ayo
 
-#        文章地址：http://blog.csdn.net/csnd_ayo/article/details/70197915
+#        锟斤拷锟铰碉拷址锟斤拷http://blog.csdn.net/csnd_ayo/article/details/70197915
 
-#	期待你提交Bug，欢迎Issues。
+#	锟节达拷锟斤拷锟结交Bug锟斤拷锟斤拷迎Issues锟斤拷
 
 
 
@@ -36,6 +36,8 @@
 
 QT       += core gui
 CONFIG += C++11
+
+include(qxt/qxt.pri)
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -59,12 +61,14 @@ SOURCES += main.cpp\
     oeamplifier.cpp \
     oescreen.cpp \
     oerect.cpp \
-    oecommonhelper.cpp
+    oecommonhelper.cpp \
+    oescreenshotwidget.cpp
 
 HEADERS  += oescreenshot.h \
     oeamplifier.h \
     oescreen.h \
     oerect.h \
-    oecommonhelper.h
+    oecommonhelper.h \
+    oescreenshotwidget.h
 
 DISTFILES +=

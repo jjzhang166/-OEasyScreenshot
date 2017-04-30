@@ -88,10 +88,25 @@ public:
      * @return: 返回 OEScreenshot 实例指针
      * @date  : 2017年04月15日
      */
-    static OEScreenshot *Instance();
+    static OEScreenshot *Instance(void);
+
+    /**
+     * @brief : 摧毁截图窗口
+     * @note  : 通过这个函数可以摧毁整个截图窗口
+     * @date  : 2017年04月30日
+     */
+    static void destroy(void);
 
 protected:
 
+    /**
+     * @brief : 隐藏窗口事件
+     */
+    virtual void hideEvent(QHideEvent *);
+    /**
+     * @brief : 关闭窗口事件
+     */
+    virtual void closeEvent(QCloseEvent *);
     /**
      * @brief : 双击事件
      */
@@ -217,8 +232,8 @@ private:
     static OEScreenshot *self_;
     /// 置顶定时器
     QTimer* egoisticTimer_;
-    bool isTop_;
-
+    /// 活动窗口
+    static bool isActivity_;
 private slots:
 
     /**

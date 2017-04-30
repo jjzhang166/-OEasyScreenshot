@@ -80,6 +80,7 @@ static const unsigned char uc_mouse_image[] = {
 
 
 OEScreenshot * OEScreenshot::self_ = nullptr;
+bool OEScreenshot::isActivity_ = false;
 
 OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),isLeftPressed_ (false),
     backgroundScreen_(nullptr), originPainting_(nullptr),screenTool_(nullptr)
@@ -113,14 +114,36 @@ OEScreenshot::~OEScreenshot(void)
  * @return：OEScreenshot
  */
 OEScreenshot *OEScreenshot::Instance(void) {
+    if (!isActivity_ && self_) {
+        destroy();
+    }
     static QMutex mutex;
     if (!self_) {
        QMutexLocker locker(&mutex);
        if (!self_) {
+           isActivity_ = true;
            self_ = new OEScreenshot;
        }
     }
     return self_;
+}
+
+void OEScreenshot::destroy(void) {
+    if (!isActivity_ && self_) {
+        delete self_;
+        self_ = nullptr;
+    }
+}
+
+void OEScreenshot::hideEvent(QHideEvent *)
+{
+    isActivity_ = false;
+}
+
+
+void OEScreenshot::closeEvent(QCloseEvent *)
+{
+    isActivity_ = false;
 }
 
 void OEScreenshot::mouseDoubleClickEvent(QMouseEvent *)

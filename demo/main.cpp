@@ -30,10 +30,11 @@
 
 #include <QApplication>
 #include <oescreenshot.h>
+#include <oescreenshotwidget.h>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    // 启用截屏
-    OEScreenshot::Instance();
+    OEScreenshotWidget s;
+    s.show();
     return a.exec();
 }
