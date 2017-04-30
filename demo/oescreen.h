@@ -74,18 +74,18 @@ signals:
 protected:
 
     /// 内边距，决定拖拽的触发。
-    const int PADDING_ = 5;
+    const int PADDING_ = 6;
 
     /// 方位枚举
     enum DIRECTION {
-        UP=0,
-        DOWN=1,
+        UPPER=0,
+        LOWER=1,
         LEFT,
         RIGHT,
-        LEFTTOP,
-        LEFTBOTTOM,
-        RIGHTBOTTOM,
-        RIGHTTOP,
+        LEFTUPPER,
+        LEFTLOWER,
+        RIGHTLOWER,
+        RIGHTUPPER,
         NONE
     };
 

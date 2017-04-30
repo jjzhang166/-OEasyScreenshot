@@ -72,60 +72,62 @@ OEScreen::DIRECTION OEScreen::getRegion(const QPoint &cursor) {
         return NONE;
     }
     OEScreen::DIRECTION ret_dir = NONE;
-    QPoint ptopleft = mapToParent(rect().topLeft());
-    QPoint prightbottom = mapToParent(rect().bottomRight());
+    // left upper
+    QPoint pt_lu = mapToParent(rect().topLeft());
+    // right lower
+    QPoint pt_rl = mapToParent(rect().bottomRight());
 
     int x = cursor.x();
     int y = cursor.y();
 
     /// 获得鼠标当前所处窗口的边界方向
-    if(ptopleft.x() + PADDING_ >= x
-    && ptopleft.x() <= x
-    && ptopleft.y() + PADDING_ >= y
-    && ptopleft.y() <= y) {
+    if(pt_lu.x() + PADDING_ >= x
+    && pt_lu.x() <= x
+    && pt_lu.y() + PADDING_ >= y
+    && pt_lu.y() <= y) {
         // 左上角
-        ret_dir = LEFTTOP;
+        ret_dir = LEFTUPPER;
         this->setCursor(QCursor(Qt::SizeFDiagCursor));
-    } else if(x >= prightbottom.x() - PADDING_
-           && x <= prightbottom.x()
-           && y >= prightbottom.y() - PADDING_
-           && y <= prightbottom.y()) {
+    } else if(x >= pt_rl.x() - PADDING_
+           && x <= pt_rl.x()
+           && y >= pt_rl.y() - PADDING_
+           && y <= pt_rl.y()) {
         // 右下角
-        ret_dir = RIGHTBOTTOM;
+        ret_dir = RIGHTLOWER;
         this->setCursor(QCursor(Qt::SizeFDiagCursor));
-    } else if(x <= ptopleft.x() + PADDING_
-           && x >= ptopleft.x()
-           && y >= prightbottom.y() - PADDING_
-           && y <= prightbottom.y()) {
+    } else if(x <= pt_lu.x() + PADDING_
+           && x >= pt_lu.x()
+           && y >= pt_rl.y() - PADDING_
+           && y <= pt_rl.y()) {
         // 左下角
-        ret_dir = LEFTBOTTOM;
+        ret_dir = LEFTLOWER;
         this->setCursor(QCursor(Qt::SizeBDiagCursor));
-    } else if(x <= prightbottom.x()
-           && x >= prightbottom.x() - PADDING_
-           && y >= ptopleft.y()
-           && y <= ptopleft.y() + PADDING_) {
+    } else if(x <= pt_rl.x()
+           && x >= pt_rl.x() - PADDING_
+           && y >= pt_lu.y()
+           && y <= pt_lu.y() + PADDING_) {
         // 右上角
-        ret_dir = RIGHTTOP;
+        ret_dir = RIGHTUPPER;
         this->setCursor(QCursor(Qt::SizeBDiagCursor));
-    } else if(x <= ptopleft.x() + PADDING_
-           && x >= ptopleft.x()) {
+    } else if(x <= pt_lu.x() + PADDING_
+           && x >= pt_lu.x()) {
         // 左边
         ret_dir = LEFT;
         this->setCursor(QCursor(Qt::SizeHorCursor));
-    } else if( x <= prightbottom.x()
-            && x >= prightbottom.x() - PADDING_) {
+    } else if( x <= pt_rl.x()
+            && x >= pt_rl.x() - PADDING_) {
         // 右边
         ret_dir = RIGHT;
         this->setCursor(QCursor(Qt::SizeHorCursor));
-    }else if(y >= ptopleft.y()
-          && y <= ptopleft.y() + PADDING_){
+    }else if(y >= pt_lu.y()
+          && y <= pt_lu.y() + PADDING_){
         // 上边
-        ret_dir = UP;
+        ret_dir = UPPER;
         this->setCursor(QCursor(Qt::SizeVerCursor));
-    } else if(y <= prightbottom.y()
-           && y >= prightbottom.y() - PADDING_) {
+    } else if(y <= pt_rl.y()
+           && y >= pt_rl.y() - PADDING_) {
         // 下边
-        ret_dir = DOWN;
+        ret_dir = LOWER;
         this->setCursor(QCursor(Qt::SizeVerCursor));
     }else {
         // 默认
@@ -166,12 +168,17 @@ void OEScreen::mouseReleaseEvent(QMouseEvent * e) {
         }
     }
 }
+
 void OEScreen::mouseMoveEvent(QMouseEvent * e) {
     QPoint gloPoint = mapToParent(e->pos());
-    QPoint ptopleft = mapToParent(rect().topLeft());
-    QPoint pleftbottom = mapToParent(rect().bottomLeft());
-    QPoint prightbottom = mapToParent(rect().bottomRight());
-    QPoint prighttop = mapToParent(rect().topRight());
+    // left upper
+    QPoint pt_lu = mapToParent(rect().topLeft());
+    // left lower
+    QPoint pt_ll = mapToParent(rect().bottomLeft());
+    // right lower
+    QPoint pt_rl = mapToParent(rect().bottomRight());
+    // right upper
+    QPoint pt_ru = mapToParent(rect().topRight());
     if(!isPressed_) {
         /// 检查鼠标鼠标方向
         direction_ = getRegion(gloPoint);
@@ -180,22 +187,22 @@ void OEScreen::mouseMoveEvent(QMouseEvent * e) {
         switch(direction_) {
         case NONE:
         case RIGHT:
-        case RIGHTBOTTOM:
-            originPoint_ = ptopleft;
+        case RIGHTLOWER:
+            originPoint_ = pt_lu;
             break;
-        case RIGHTTOP:
-            originPoint_ = pleftbottom;
+        case RIGHTUPPER:
+            originPoint_ = pt_ll;
             break;
         case LEFT:
-        case LEFTBOTTOM:
-            originPoint_ = prighttop;
+        case LEFTLOWER:
+            originPoint_ = pt_ru;
             break;
-        case LEFTTOP:
-        case UP:
-            originPoint_ = prightbottom;
+        case LEFTUPPER:
+        case UPPER:
+            originPoint_ = pt_rl;
             break;
-        case DOWN:
-            originPoint_ = ptopleft;
+        case LOWER:
+            originPoint_ = pt_lu;
             break;
         }
     }
@@ -205,17 +212,17 @@ void OEScreen::mouseMoveEvent(QMouseEvent * e) {
             /// 鼠标进行拖拉拽
             switch(direction_) {
             case LEFT:
-                return onMouseChange(global_x, pleftbottom.y() + 1);
+                return onMouseChange(global_x, pt_ll.y() + 1);
             case RIGHT:
-                return onMouseChange(global_x, prightbottom.y() + 1);
-            case UP:
-                return onMouseChange(ptopleft.x(), gloPoint.y());
-            case DOWN:
-                return onMouseChange(prightbottom.x() + 1, gloPoint.y());
-            case LEFTTOP:
-            case RIGHTTOP:
-            case LEFTBOTTOM:
-            case RIGHTBOTTOM:
+                return onMouseChange(global_x, pt_rl.y() + 1);
+            case UPPER:
+                return onMouseChange(pt_lu.x(), gloPoint.y());
+            case LOWER:
+                return onMouseChange(pt_rl.x() + 1, gloPoint.y());
+            case LEFTUPPER:
+            case RIGHTUPPER:
+            case LEFTLOWER:
+            case RIGHTLOWER:
                 return onMouseChange(global_x, gloPoint.y());
             default:
                 break;
