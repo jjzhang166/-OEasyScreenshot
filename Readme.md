@@ -56,7 +56,9 @@ doc文档： [【点击下载】](http://git.oschina.net/Mr_ChenLuYong/screensho
 
     贡献：
 
-        暂无
+     - [开源小组.Chen](http://blog.csdn.net/csnd_ayo)
+
+
 
 - 详情
 
