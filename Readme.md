@@ -25,11 +25,13 @@ Qt库版本：Qt 5.8.1 （测试5.0以上都可以正常编译）
 
 doc文档： [【点击下载】](http://git.oschina.net/Mr_ChenLuYong/screenshot/attach_files/download?i=80250&u=http%3A%2F%2Ffiles.git.oschina.net%2Fgroup1%2FM00%2F01%2F32%2FPaAvDFkEMRiAU8ApAAR5kUgxDQw424.zip%3Ftoken%3D24f7dad07568a7807aa4e6e7407e5bec%26ts%3D1493447261%26attname%3Ddoc.zip)
 
+
+附   言： 如果您通过其它环境编译通过（例：VS2010~VS2017 或 Linux）， 都可以Pull有效文件来，请允许我代表需要这份代码的所有朋友们，感谢您。
+
+
+
 # 待开发功能
 
-- 全局热键
-
-     2.可自定义呼出的函数或功能
 
 - 绘图功能
 
