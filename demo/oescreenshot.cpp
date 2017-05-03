@@ -312,7 +312,7 @@ void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
     if (e->button() == Qt::RightButton) {
         if (screenTool_.get() != nullptr) {
             rectTool_->hide();
-            amplifierTool_->onPostionChange(x(), y());
+            amplifierTool_->onPostionChange(e->x(), e->y());
             amplifierTool_->show();
             return destroyScreen();
         }
