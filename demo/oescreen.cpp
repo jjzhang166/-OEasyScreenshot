@@ -59,8 +59,6 @@ OEScreen::OEScreen(std::shared_ptr<QPixmap> originPainting, QPoint pos, QWidget 
     connect(this, SIGNAL(doubleClick()),
             this, SLOT(onSaveScreen()));
 
-    /// 设置成无边框对话框
-    setWindowFlags(Qt::FramelessWindowHint|Qt::WindowSystemMenuHint);
     /// 开启鼠标实时追踪
     setMouseTracking(true);
     /// 默认隐藏
