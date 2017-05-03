@@ -156,6 +156,7 @@ void OEScreen::mousePressEvent(QMouseEvent *e) {
         if(direction_ != NONE) {
             this->mouseGrabber();
         }
+        /// @bug :这里可能存在问题, 不应当使用globalPos
         movePos_ = e->globalPos() - pos();
     }
 }
@@ -230,6 +231,7 @@ void OEScreen::mouseMoveEvent(QMouseEvent * e) {
         }
         else {
             /// 窗口的移动
+            /// @bug :这里可能存在问题, 不应当使用globalPos
             move(e->globalPos() - movePos_);
             movePos_ = e->globalPos() - pos();
             e->accept();
