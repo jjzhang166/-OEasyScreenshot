@@ -62,13 +62,15 @@ SOURCES += main.cpp\
     oescreen.cpp \
     oerect.cpp \
     oecommonhelper.cpp \
-    oescreenshotwidget.cpp
+    oescreenshotwidget.cpp \
+    oemodelview.cpp
 
 HEADERS  += oescreenshot.h \
     oeamplifier.h \
     oescreen.h \
     oerect.h \
     oecommonhelper.h \
-    oescreenshotwidget.h
+    oescreenshotwidget.h \
+    oemodelview.h
 
 DISTFILES +=
