@@ -29,12 +29,16 @@
 
 
 #include <QApplication>
-#include <oescreenshot.h>
 #include <oescreenshotwidget.h>
+#include <oemodelview.h>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     OEScreenshotWidget s;
     s.show();
+    /// @test : 测试窗口，可以注释
+    OEModelView* ss = new OEModelView(OEModelView::MODEL::Arrows);
+
+    ss->show();
     return a.exec();
 }
