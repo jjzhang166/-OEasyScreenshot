@@ -29,23 +29,19 @@
 
 #include "oescreenshot.h"
 
-#include <QApplication>
-#include <QMouseEvent>
 
-#include <QPen>
-#include <QPainter>
-#include <QMenu>
-#include <QDateTime>
-#include <QFileDialog>
-#include <QClipboard>
-#include <QPainter>
-#include <QScreen>
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QMouseEvent>
+#include <QFileDialog>
+#include <QClipboard>
+#include <QDateTime>
+#include <QPainter>
+#include <QScreen>
 #include <QCursor>
 #include <QMutex>
-#include <QTimer>
+#include <QMenu>
+#include <QPen>
 #ifndef QT_NO_DEBUG
 #include <QDebug>
 #endif
@@ -53,8 +49,6 @@
 #include <windows.h>
 
 #include "oeamplifier.h"
-//#include "oescreen.h"
-//#include "oerect.h"
 #include "oecommonhelper.h"
 
 
@@ -93,9 +87,9 @@ OEScreenshot * OEScreenshot::self_ = nullptr;
 bool OEScreenshot::isActivity_ = false;
 bool OEScreen::isInit_ = false;
 
-OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),isLeftPressed_ (false),
-    backgroundScreen_(nullptr), originPainting_(nullptr),screenTool_(nullptr)
-{
+OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),
+    isLeftPressed_ (false), backgroundScreen_(nullptr),
+    originPainting_(nullptr), screenTool_(nullptr) {
     /// 初始化鼠标
     initCursor();
     /// 截取屏幕信息
@@ -120,8 +114,7 @@ OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),isLeftPressed_ (fa
     show();
 }
 
-OEScreenshot::~OEScreenshot(void)
-{
+OEScreenshot::~OEScreenshot(void) {
 }
 
 /**
@@ -150,19 +143,16 @@ void OEScreenshot::destroy(void) {
     }
 }
 
-void OEScreenshot::hideEvent(QHideEvent *)
-{
+void OEScreenshot::hideEvent(QHideEvent *) {
     isActivity_ = false;
 }
 
 
-void OEScreenshot::closeEvent(QCloseEvent *)
-{
+void OEScreenshot::closeEvent(QCloseEvent *) {
     isActivity_ = false;
 }
 
-void OEScreenshot::mouseDoubleClickEvent(QMouseEvent *)
-{
+void OEScreenshot::mouseDoubleClickEvent(QMouseEvent *) {
     emit doubleClick();
 }
 
@@ -416,14 +406,9 @@ void OEScreenshot::keyPressEvent(QKeyEvent *e) {
 
 }
 
-void OEScreenshot::keyReleaseEvent(QKeyEvent *)
-{
-
-}
 
 
-
-
+///////////////////////////////////////////////////////////
 
 
 
@@ -468,6 +453,7 @@ void OERect::onSizeChange(int w, int h) {
 
 
 
+///////////////////////////////////////////////////////////
 
 
 
@@ -688,13 +674,11 @@ void OEScreen::resizeEvent(QResizeEvent *) {
     emit sizeChange(width(), height());
 }
 
-void OEScreen::showEvent(QShowEvent *)
-{
+void OEScreen::showEvent(QShowEvent *) {
     isInit_ = true;
 }
 
-void OEScreen::hideEvent(QHideEvent *)
-{
+void OEScreen::hideEvent(QHideEvent *) {
     currentRect_ = {};
     movePos_ = {};
     originPoint_ = {};
