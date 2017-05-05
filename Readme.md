@@ -11,6 +11,11 @@
 
 一个优秀的项目，少不了各位的支持与参与，欢迎你加入我们。
 
+# 示例效果
+
+![示例效果](http://img.blog.csdn.net/20170427214737758?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NORF9BeW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast "OEScreenshot")
+
+
 # 关于项目
 
 工程环境：Qt Creator 4.2.1
