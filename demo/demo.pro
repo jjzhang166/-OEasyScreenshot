@@ -5,7 +5,8 @@
 #-------------------------------------------------
 
 QT       += core gui
-CONFIG += C++11
+CONFIG   += C++11
+DESTDIR   = ../bin
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = demo
