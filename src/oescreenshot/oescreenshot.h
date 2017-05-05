@@ -137,8 +137,13 @@ protected:
      * @brief : 自绘事件
      */
     virtual void paintEvent(QPaintEvent *);
-private:
 
+    /**
+     * @brief : 更新当前鼠标选区的窗口
+     */
+    void updateMouse(void);
+
+private:
 
 
     /**

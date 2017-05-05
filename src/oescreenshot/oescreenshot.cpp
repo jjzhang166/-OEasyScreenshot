@@ -101,6 +101,10 @@ OEScreenshot::OEScreenshot(QWidget *parent) : QWidget(parent),isLeftPressed_ (fa
     onEgoistic();
     /// 开启鼠标实时追踪
     setMouseTracking(true);
+    /// 更新鼠标的位置
+    emit cursorPosChange(cursor().pos().x(), cursor().pos().y());
+    /// 更新鼠标区域窗口
+    updateMouse();
     /// 展示窗口
     show();
 }
@@ -163,7 +167,6 @@ void OEScreenshot::initAmplifier(std::shared_ptr<QPixmap> originPainting) {
     amplifierTool_.reset(new OEAmplifier(temp_pm, this));
     connect(this,SIGNAL(cursorPosChange(int,int)),
             amplifierTool_.get(), SLOT(onPostionChange(int,int)));
-    amplifierTool_->onPostionChange(x(), y());
     amplifierTool_->show();
     amplifierTool_->raise();
 }
@@ -353,16 +356,8 @@ void OEScreenshot::mouseMoveEvent(QMouseEvent *e) {
         /// 霸道置顶
         onEgoistic();
 
-        /// 获取当前鼠标选中的窗口
-        ::EnableWindow((HWND)winId(), FALSE);
-        OECommonHelper::getSmallestWindowFromCursor(windowRect_);
-        QPoint temp_pt = mapFromGlobal(QPoint(windowRect_.x(), windowRect_.y()));
-        windowRect_ = QRect(temp_pt.x(), temp_pt.y(),
-                            windowRect_.width(), windowRect_.height());
-        ::EnableWindow((HWND)winId(), TRUE);
-        amplifierTool_->onSizeChange(windowRect_.width(),windowRect_.height());
-        emit findChildWind(windowRect_);
-        update();
+        /// 更新当前鼠标选中的窗口
+        updateMouse();
     }
     QWidget::mouseMoveEvent(e);
 }
@@ -384,6 +379,19 @@ void OEScreenshot::paintEvent(QPaintEvent *) {
         painter.drawPixmap(QPoint(windowRect_.x(),windowRect_.y()),
            *originPainting_, windowRect_);
     }
+}
+
+void OEScreenshot::updateMouse(void) {
+    /// 获取当前鼠标选中的窗口
+    ::EnableWindow((HWND)winId(), FALSE);
+    OECommonHelper::getSmallestWindowFromCursor(windowRect_);
+    QPoint temp_pt = mapFromGlobal(QPoint(windowRect_.x(), windowRect_.y()));
+    windowRect_ = QRect(temp_pt.x(), temp_pt.y(),
+                        windowRect_.width(), windowRect_.height());
+    ::EnableWindow((HWND)winId(), TRUE);
+    amplifierTool_->onSizeChange(windowRect_.width(),windowRect_.height());
+    emit findChildWind(windowRect_);
+    update();
 }
 
 void OEScreenshot::keyPressEvent(QKeyEvent *e) {
