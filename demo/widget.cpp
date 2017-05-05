@@ -1,4 +1,5 @@
-#include "oescreenshotwidget.h"
+#include "widget.h"
+#include "ui_widget.h"
 
 #include <QPushButton>
 
@@ -6,12 +7,15 @@
 #include <QDebug>
 #endif
 
-#include "oescreenshot.h"
+#include "oescreenshot/oescreenshot.h"
 #include "qxt/qxtglobalshortcut.h"
 
+Widget::Widget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::Widget),
+  openScreenshotButton_(new QPushButton(this)) {
 
-OEScreenshotWidget::OEScreenshotWidget(QWidget *parent) : QWidget(parent),
-    openScreenshotButton_(new QPushButton(this)) {
+    ui->setupUi(this);
     openScreenshotButton_->setGeometry(0,0,300,300);
     openScreenshotButton_->setObjectName("OpenScreenshotButton");
     openScreenshotButton_->show();
@@ -24,7 +28,12 @@ OEScreenshotWidget::OEScreenshotWidget(QWidget *parent) : QWidget(parent),
             this, SLOT(onScreenshot()));
 }
 
-void OEScreenshotWidget::onScreenshot()
+Widget::~Widget()
+{
+    delete ui;
+}
+
+void Widget::onScreenshot()
 {
     OEScreenshot::Instance();
 }
