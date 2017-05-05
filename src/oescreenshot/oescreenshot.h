@@ -48,8 +48,7 @@ class QMenu;
  *          管理全局热键,资源的回收与释放.
  * @remark: 调用示例( OEScreenshot::Instance(); )
 */
-class OEScreenshot : public QWidget
-{
+class OEScreenshot : public QWidget {
     Q_OBJECT
 
 signals:
@@ -130,11 +129,6 @@ protected:
      * @brief : 按键按下事件
      */
     virtual void keyPressEvent(QKeyEvent *e);
-
-    /**
-     * @brief : 按键弹起事件
-     */
-    virtual void keyReleaseEvent(QKeyEvent *);
     /**
      * @brief : 自绘事件
      */
@@ -259,8 +253,7 @@ private slots:
  * @brief : 大小感知器
  * @note  : 主要关乎截图器左上方的大小感知控件
 */
-class OERect : public QWidget
-{
+class OERect : public QWidget {
     Q_OBJECT
 
 signals:
@@ -310,7 +303,7 @@ private:
  * @brief : 截图器
  * @note  : 主要关乎图片的编辑与保存
 */
-class OEScreen : public QWidget{
+class OEScreen : public QWidget {
 
     Q_OBJECT
 
