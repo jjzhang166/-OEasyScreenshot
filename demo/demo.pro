@@ -19,16 +19,12 @@ SOURCES += main.cpp\
     ../src/oescreenshot/oeamplifier.cpp \
     ../src/oescreenshot/oecommonhelper.cpp \
     ../src/oescreenshot/oemodelview.cpp \
-    ../src/oescreenshot/oerect.cpp \
-    ../src/oescreenshot/oescreen.cpp \
     ../src/oescreenshot/oescreenshot.cpp
 
 HEADERS  += widget.h \
     ../src/oescreenshot/oeamplifier.h \
     ../src/oescreenshot/oecommonhelper.h \
     ../src/oescreenshot/oemodelview.h \
-    ../src/oescreenshot/oerect.h \
-    ../src/oescreenshot/oescreen.h \
     ../src/oescreenshot/oescreenshot.h
 
 FORMS    += widget.ui
