@@ -49,7 +49,9 @@ doc文档： [【点击下载】](http://git.oschina.net/Mr_ChenLuYong/screensho
      4.撤销功能
 
      5.擦除功能
-该功能，作者已给出范例，可以模仿修改优化。  [【点击前往】](http://git.oschina.net/Mr_ChenLuYong/screenshot/blob/master/src/oescreenshot/oemodelview.cpp)
+
+绘图功能，作者已给出范例，可以模仿修改优化。  [【点击前往】](http://git.oschina.net/Mr_ChenLuYong/screenshot/blob/master/src/oescreenshot/oemodelview.cpp)
+
 
 # 开源通知
 
