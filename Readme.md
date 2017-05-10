@@ -103,4 +103,6 @@ doc文档： [【点击下载】](http://git.oschina.net/Mr_ChenLuYong/screensho
 
 - 开源
 
-    码云地址：http://git.oschina.net/Mr_ChenLuYong/screenshot
+    码云地址：http://git.oschina.net/Mr_ChenLuYong/screenshot  【实时更新，作者关注】
+
+    github地址：https://github.com/chenluyong/screenshot    【更新较慢，且无任何Commit记录】
