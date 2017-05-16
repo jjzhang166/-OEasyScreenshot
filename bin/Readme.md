@@ -34,3 +34,5 @@ Qt5Widgets.dll
 
 
 -----
+
+[Qt 使用 windeployqt 讲述史上最正确window发布版本的生成姿势](http://blog.csdn.net/csnd_ayo/article/details/72130015)
