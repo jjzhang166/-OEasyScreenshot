@@ -1,4 +1,4 @@
-#include "widget.h"
+﻿#include "widget.h"
 #include "ui_widget.h"
 
 #include <QPushButton>
@@ -7,7 +7,7 @@
 #include <QDebug>
 #endif
 
-#include "oescreenshot/oescreenshot.h"
+#include "oescreenshot.h"
 #include "qxt/qxtglobalshortcut.h"
 
 Widget::Widget(QWidget *parent) :

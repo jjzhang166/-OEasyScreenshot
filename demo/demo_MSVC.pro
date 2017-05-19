@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = demo
 TEMPLATE = app
-INCLUDEPATH += "../src/"
+INCLUDEPATH += "../src/oescreenshot_msvc/"
 include(MSVC/qxt/qxt.pri)
 
 SOURCES += MSVC/main.cpp\
