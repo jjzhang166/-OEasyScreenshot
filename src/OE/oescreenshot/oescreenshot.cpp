@@ -378,6 +378,7 @@ void OEScreenshot::paintEvent(QPaintEvent *) {
 void OEScreenshot::updateMouse(void) {
     /// 获取当前鼠标选中的窗口
     ::EnableWindow((HWND)winId(), FALSE);
+    /// @marker: 只更新一次,可以修复用户误操作导致的查找窗口与识别界面窗口不一致.
     OECommonHelper::getSmallestWindowFromCursor(windowRect_);
     QPoint temp_pt = mapFromGlobal(QPoint(windowRect_.x(), windowRect_.y()));
     windowRect_ = QRect(temp_pt.x(), temp_pt.y(),
