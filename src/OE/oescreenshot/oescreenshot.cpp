@@ -309,6 +309,8 @@ void OEScreenshot::mouseReleaseEvent(QMouseEvent *e) {
             rectTool_->hide();
             amplifierTool_->onPostionChange(e->x(), e->y());
             amplifierTool_->show();
+            /// 更新当前鼠标选中的窗口
+            updateMouse();
             return destroyScreen();
         }
         close();
